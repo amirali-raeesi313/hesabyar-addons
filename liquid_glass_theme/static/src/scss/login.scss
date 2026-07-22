@@ -1,0 +1,656 @@
+/* Liquid Glass authentication surface — scoped to Odoo's native login layout. */
+
+body.o_liquid_login_page {
+    --lg-login-bg: #07101d;
+    --lg-login-bg-deep: #030812;
+    --lg-login-ink: rgba(255, 255, 255, 0.96);
+    --lg-login-ink-soft: rgba(232, 242, 255, 0.72);
+    --lg-login-ink-muted: rgba(218, 232, 249, 0.52);
+    --lg-login-surface: rgba(13, 28, 46, 0.66);
+    --lg-login-surface-solid: #13253a;
+    --lg-login-input: rgba(255, 255, 255, 0.085);
+    --lg-login-input-hover: rgba(255, 255, 255, 0.12);
+    --lg-login-border: rgba(255, 255, 255, 0.19);
+    --lg-login-border-strong: rgba(255, 255, 255, 0.38);
+    --lg-login-primary: #67b7ff;
+    --lg-login-primary-strong: #399cf4;
+    --lg-login-danger: #ff7182;
+    --lg-login-success: #43dda2;
+    --lg-login-focus: rgba(103, 183, 255, 0.42);
+    --lg-login-shadow: 0 34px 90px rgba(0, 0, 0, 0.44),
+        0 10px 32px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    --lg-login-image: url("/liquid_glass_theme/static/img/liquid-night.webp");
+    color-scheme: dark;
+    min-height: 100%;
+    margin: 0;
+    overflow-x: hidden;
+    color: var(--lg-login-ink);
+    font-family: Yekan, Vazirmatn, IRANSans, Tahoma, Arial, sans-serif;
+    background:
+        radial-gradient(circle at 18% 18%, rgba(36, 158, 220, 0.26), transparent 34rem),
+        radial-gradient(circle at 82% 78%, rgba(41, 105, 214, 0.2), transparent 36rem),
+        linear-gradient(145deg, rgba(2, 10, 21, 0.9), rgba(5, 20, 34, 0.82)),
+        var(--lg-login-image) center / cover fixed no-repeat !important;
+    text-align: right;
+    direction: rtl;
+}
+
+html[data-liquid-login-theme="light"] body.o_liquid_login_page {
+    --lg-login-bg: #eaf3fb;
+    --lg-login-bg-deep: #d8e7f5;
+    --lg-login-ink: rgba(11, 28, 48, 0.96);
+    --lg-login-ink-soft: rgba(20, 47, 76, 0.72);
+    --lg-login-ink-muted: rgba(34, 65, 96, 0.55);
+    --lg-login-surface: rgba(248, 252, 255, 0.72);
+    --lg-login-surface-solid: #f4f9fd;
+    --lg-login-input: rgba(255, 255, 255, 0.64);
+    --lg-login-input-hover: rgba(255, 255, 255, 0.84);
+    --lg-login-border: rgba(38, 91, 135, 0.17);
+    --lg-login-border-strong: rgba(33, 98, 151, 0.34);
+    --lg-login-primary: #1477c9;
+    --lg-login-primary-strong: #0864ae;
+    --lg-login-danger: #c92f4a;
+    --lg-login-success: #087c56;
+    --lg-login-focus: rgba(24, 126, 211, 0.25);
+    --lg-login-shadow: 0 30px 80px rgba(53, 89, 119, 0.18),
+        0 8px 26px rgba(53, 89, 119, 0.11),
+        inset 0 1px 0 rgba(255, 255, 255, 0.92);
+    --lg-login-image: url("/liquid_glass_theme/static/img/liquid-pearl.webp");
+    color-scheme: light;
+    background:
+        radial-gradient(circle at 16% 16%, rgba(80, 184, 234, 0.2), transparent 34rem),
+        radial-gradient(circle at 84% 78%, rgba(95, 140, 230, 0.14), transparent 38rem),
+        linear-gradient(145deg, rgba(239, 248, 255, 0.9), rgba(218, 235, 248, 0.82)),
+        var(--lg-login-image) center / cover fixed no-repeat !important;
+}
+
+body.o_liquid_login_page #wrapwrap,
+body.o_liquid_login_page main {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: transparent !important;
+}
+
+body.o_liquid_login_page #wrapwrap {
+    position: relative;
+    z-index: 1;
+    isolation: isolate;
+}
+
+.o_liquid_login_ambient {
+    position: fixed;
+    z-index: -1;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.o_liquid_login_ambient::before {
+    position: absolute;
+    inset: 0;
+    content: "";
+    background:
+        linear-gradient(115deg, transparent 22%, rgba(255, 255, 255, 0.055) 46%, transparent 68%),
+        radial-gradient(ellipse at 50% 115%, rgba(92, 205, 255, 0.19), transparent 56%);
+    mix-blend-mode: screen;
+    opacity: 0.8;
+}
+
+.o_liquid_login_orb {
+    position: absolute;
+    display: block;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    filter: blur(1px);
+    opacity: 0.72;
+    will-change: transform;
+    animation: o-liquid-login-drift 22s ease-in-out infinite alternate;
+}
+
+.o_liquid_login_orb--one {
+    inset-block-start: -11rem;
+    inset-inline-start: -8rem;
+    width: 30rem;
+    height: 30rem;
+    background: radial-gradient(circle at 38% 38%, rgba(113, 224, 255, 0.26), rgba(19, 102, 178, 0.03) 64%);
+}
+
+.o_liquid_login_orb--two {
+    inset-block-end: -14rem;
+    inset-inline-end: -8rem;
+    width: 38rem;
+    height: 38rem;
+    background: radial-gradient(circle at 45% 42%, rgba(92, 142, 255, 0.22), rgba(24, 72, 143, 0.02) 68%);
+    animation-delay: -8s;
+    animation-duration: 28s;
+}
+
+.o_liquid_login_orb--three {
+    inset-block-start: 30%;
+    inset-inline-end: 10%;
+    width: 13rem;
+    height: 13rem;
+    background: radial-gradient(circle at 40% 40%, rgba(117, 238, 220, 0.13), transparent 70%);
+    animation-delay: -13s;
+    animation-duration: 25s;
+}
+
+.o_liquid_login_grain {
+    position: absolute;
+    inset: 0;
+    display: block;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+    opacity: 0.035;
+}
+
+.o_liquid_login_shell.container {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    min-height: 100vh;
+    min-height: 100dvh;
+    place-items: center;
+    padding: 2rem !important;
+}
+
+.o_liquid_login_card.card {
+    position: relative;
+    width: 100%;
+    max-width: 28rem !important;
+    overflow: hidden;
+    color: var(--lg-login-ink);
+    border: 1px solid var(--lg-login-border) !important;
+    border-radius: 2rem !important;
+    background: var(--lg-login-surface) !important;
+    box-shadow: var(--lg-login-shadow) !important;
+    isolation: isolate;
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .o_liquid_login_card.card {
+        -webkit-backdrop-filter: blur(28px) saturate(155%);
+        backdrop-filter: blur(28px) saturate(155%);
+    }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .o_liquid_login_card.card {
+        background: var(--lg-login-surface-solid) !important;
+    }
+}
+
+.o_liquid_login_card.card::before,
+.o_liquid_login_card.card::after {
+    position: absolute;
+    z-index: -1;
+    content: "";
+    pointer-events: none;
+}
+
+.o_liquid_login_card.card::before {
+    inset: 0;
+    border-radius: inherit;
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.2), transparent 22%, transparent 72%, rgba(255, 255, 255, 0.06)),
+        radial-gradient(circle at 16% 2%, rgba(255, 255, 255, 0.16), transparent 38%);
+    opacity: 0.68;
+}
+
+.o_liquid_login_card.card::after {
+    inset-block-start: -45%;
+    inset-inline-start: -70%;
+    width: 95%;
+    height: 180%;
+    transform: rotate(18deg);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.095), transparent);
+}
+
+.o_liquid_login_card_body.card-body {
+    position: relative;
+    z-index: 1;
+    padding: 2.25rem !important;
+}
+
+.o_liquid_login_theme_control {
+    position: absolute;
+    z-index: 4;
+    inset-block-start: 1rem;
+    inset-inline-end: 1rem;
+}
+
+.o_liquid_login_theme_toggle {
+    display: inline-grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    color: var(--lg-login-ink);
+    border: 1px solid var(--lg-login-border);
+    border-radius: 50%;
+    background: var(--lg-login-input);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.12);
+    place-items: center;
+    transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.o_liquid_login_theme_toggle:hover {
+    border-color: var(--lg-login-border-strong);
+    background: var(--lg-login-input-hover);
+    transform: translateY(-1px) rotate(5deg);
+}
+
+.o_liquid_login_theme_toggle:focus-visible {
+    outline: 3px solid var(--lg-login-focus);
+    outline-offset: 2px;
+}
+
+.o_liquid_login_theme_icon {
+    font-family: "Segoe UI Symbol", sans-serif;
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+.o_liquid_login_identity {
+    padding: 0 3.3rem 0.9rem;
+    text-align: center;
+}
+
+.o_liquid_login_eyebrow {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.8rem;
+    padding: 0.28rem 0.72rem;
+    margin-bottom: 0.75rem;
+    color: var(--lg-login-primary);
+    border: 1px solid var(--lg-login-border);
+    border-radius: 999px;
+    background: var(--lg-login-input);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.015em;
+}
+
+.o_liquid_login_identity h1 {
+    margin: 0;
+    color: var(--lg-login-ink);
+    font-size: 2.35rem;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.035em;
+    text-shadow: 0 1px 18px rgba(115, 198, 255, 0.15);
+}
+
+.o_liquid_login_identity p {
+    margin: 0.35rem 0 0;
+    color: var(--lg-login-ink-soft);
+    font-size: 0.88rem;
+    line-height: 1.8;
+}
+
+.o_liquid_login_logo {
+    display: grid;
+    min-height: 5.5rem;
+    padding: 0.65rem !important;
+    margin: 0 auto 1.35rem !important;
+    border-bottom-color: var(--lg-login-border) !important;
+    place-items: center;
+}
+
+.o_liquid_login_company_logo {
+    width: auto;
+    max-width: 14rem !important;
+    max-height: 5.25rem !important;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.16));
+}
+
+.o_liquid_login_form {
+    position: relative;
+    color: var(--lg-login-ink);
+    text-align: right;
+}
+
+.o_liquid_login_form .mb-3 {
+    position: relative;
+    margin-bottom: 1.05rem !important;
+}
+
+.o_liquid_login_form .form-label,
+.o_liquid_login_form .col-form-label {
+    margin-bottom: 0.42rem;
+    color: var(--lg-login-ink-soft);
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.o_liquid_login_form .form-control {
+    min-height: 3.15rem;
+    padding: 0.78rem 0.95rem;
+    color: var(--lg-login-ink) !important;
+    caret-color: var(--lg-login-primary);
+    border: 1px solid var(--lg-login-border) !important;
+    border-radius: 0.95rem !important;
+    outline: 0;
+    background: var(--lg-login-input) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    transition: border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.o_liquid_login_form .form-control:hover {
+    border-color: var(--lg-login-border-strong) !important;
+    background: var(--lg-login-input-hover) !important;
+}
+
+.o_liquid_login_form .form-control:focus {
+    border-color: var(--lg-login-primary) !important;
+    background: var(--lg-login-input-hover) !important;
+    box-shadow: 0 0 0 0.25rem var(--lg-login-focus), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+.o_liquid_login_form .form-control::placeholder {
+    color: var(--lg-login-ink-muted);
+    opacity: 1;
+}
+
+.o_liquid_login_form input[name="login"],
+.o_liquid_login_form input[name="password"],
+.o_liquid_login_form input[name="db"] {
+    direction: ltr;
+    text-align: left;
+    font-family: Yekan, Vazirmatn, Tahoma, Arial, sans-serif;
+    font-variant-numeric: tabular-nums;
+}
+
+.o_liquid_login_form input[readonly] {
+    color: var(--lg-login-ink-soft) !important;
+    opacity: 0.88;
+}
+
+.o_liquid_login_form .input-group > .form-control {
+    border-start-start-radius: 0 !important;
+    border-end-start-radius: 0 !important;
+}
+
+.o_liquid_login_form .input-group .btn {
+    color: var(--lg-login-ink);
+    border-color: var(--lg-login-border);
+    border-start-start-radius: 0.95rem;
+    border-end-start-radius: 0.95rem;
+    background: var(--lg-login-input-hover);
+}
+
+.o_liquid_password_field .form-control {
+    padding-right: 6.35rem;
+    padding-left: 0.95rem;
+}
+
+.o_liquid_password_toggle {
+    position: absolute;
+    z-index: 2;
+    inset-inline-start: 0.55rem;
+    inset-block-end: 0.48rem;
+    display: inline-flex;
+    min-width: 5.2rem;
+    min-height: 2.2rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.38rem;
+    padding: 0.35rem 0.62rem;
+    color: var(--lg-login-ink-soft);
+    border: 1px solid transparent;
+    border-radius: 0.7rem;
+    background: transparent;
+    font-size: 0.74rem;
+    font-weight: 700;
+    transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease;
+}
+
+.o_liquid_password_toggle:hover {
+    color: var(--lg-login-ink);
+    border-color: var(--lg-login-border);
+    background: var(--lg-login-input-hover);
+}
+
+.o_liquid_password_toggle:focus-visible {
+    color: var(--lg-login-ink);
+    outline: 3px solid var(--lg-login-focus);
+    outline-offset: 1px;
+}
+
+.o_liquid_password_icon {
+    width: 1rem;
+    text-align: center;
+}
+
+.o_liquid_login_form .alert {
+    margin: 1rem 0;
+    padding: 0.78rem 0.9rem;
+    border-width: 1px;
+    border-radius: 0.9rem;
+    font-size: 0.82rem;
+    line-height: 1.8;
+    text-align: right;
+}
+
+.o_liquid_login_form .alert-danger {
+    color: var(--lg-login-ink);
+    border-color: rgba(255, 113, 130, 0.42);
+    background: rgba(185, 35, 59, 0.18);
+}
+
+.o_liquid_login_form .alert-success {
+    color: var(--lg-login-ink);
+    border-color: rgba(67, 221, 162, 0.4);
+    background: rgba(19, 134, 94, 0.16);
+}
+
+.o_liquid_login_form .oe_login_buttons {
+    padding-top: 0.65rem !important;
+}
+
+.o_liquid_login_submit.btn-primary {
+    position: relative;
+    min-height: 3.2rem;
+    overflow: hidden;
+    color: #061624 !important;
+    border: 1px solid rgba(255, 255, 255, 0.42) !important;
+    border-radius: 1rem !important;
+    background: linear-gradient(135deg, #8ad0ff, var(--lg-login-primary-strong)) !important;
+    box-shadow: 0 14px 34px rgba(31, 143, 229, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.64) !important;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+}
+
+.o_liquid_login_submit.btn-primary:hover {
+    filter: brightness(1.06) saturate(1.08);
+    box-shadow: 0 18px 40px rgba(31, 143, 229, 0.37), inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+    transform: translateY(-1px);
+}
+
+.o_liquid_login_submit.btn-primary:focus-visible {
+    outline: 3px solid var(--lg-login-focus);
+    outline-offset: 3px;
+}
+
+.o_liquid_login_submit.is-loading {
+    color: transparent !important;
+    pointer-events: none;
+}
+
+.o_liquid_login_submit.is-loading::before {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    margin-inline-start: -3.9rem;
+    width: 1rem;
+    height: 1rem;
+    content: "";
+    border: 2px solid rgba(6, 22, 36, 0.28);
+    border-top-color: #061624;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    animation: o-liquid-login-spin 720ms linear infinite;
+}
+
+.o_liquid_login_submit.is-loading::after {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    content: attr(data-loading-label);
+    color: #061624;
+    place-items: center;
+}
+
+.o_liquid_login_form .btn-link {
+    color: var(--lg-login-primary) !important;
+    text-decoration: none;
+}
+
+.o_liquid_login_form .btn-link:hover {
+    color: var(--lg-login-ink) !important;
+}
+
+.o_liquid_login_form .o_login_auth:empty {
+    display: none;
+}
+
+.o_liquid_login_footer {
+    color: var(--lg-login-ink-muted);
+    border-top-color: var(--lg-login-border) !important;
+}
+
+.o_liquid_login_footer a {
+    color: var(--lg-login-ink-soft);
+    border-color: var(--lg-login-border) !important;
+    text-decoration: none;
+    transition: color 160ms ease;
+}
+
+.o_liquid_login_footer a:hover,
+.o_liquid_login_footer a:focus-visible {
+    color: var(--lg-login-primary);
+}
+
+.o_liquid_login_card .o_user_switch {
+    color: var(--lg-login-ink);
+}
+
+.o_liquid_login_card .list-group-item,
+.o_liquid_login_card .dropdown-menu {
+    color: var(--lg-login-ink);
+    border-color: var(--lg-login-border);
+    background: var(--lg-login-surface-solid);
+}
+
+@keyframes o-liquid-login-drift {
+    from {
+        transform: translate3d(-1.5rem, -1rem, 0) scale(0.98);
+    }
+
+    to {
+        transform: translate3d(1.75rem, 1.2rem, 0) scale(1.04);
+    }
+}
+
+@keyframes o-liquid-login-spin {
+    to {
+        transform: translateY(-50%) rotate(360deg);
+    }
+}
+
+@media (max-width: 575.98px) {
+    body.o_liquid_login_page {
+        background-attachment: scroll !important;
+    }
+
+    .o_liquid_login_shell.container {
+        align-items: center;
+        padding: 0.75rem !important;
+    }
+
+    .o_liquid_login_card.card {
+        width: 100%;
+        border-radius: 1.55rem !important;
+    }
+
+    .o_liquid_login_card_body.card-body {
+        padding: 1.25rem 1rem 1.15rem !important;
+    }
+
+    .o_liquid_login_theme_control {
+        inset-block-start: 0.85rem;
+        inset-inline-end: 0.85rem;
+    }
+
+    .o_liquid_login_theme_toggle {
+        width: 2.55rem;
+        height: 2.55rem;
+    }
+
+    .o_liquid_login_identity {
+        padding-inline: 2.75rem;
+    }
+
+    .o_liquid_login_eyebrow {
+        font-size: 0.66rem;
+    }
+
+    .o_liquid_login_logo {
+        min-height: 4.75rem;
+        margin-bottom: 1.05rem !important;
+    }
+
+    .o_liquid_login_form .form-control,
+    .o_liquid_login_submit.btn-primary {
+        min-height: 3.25rem;
+    }
+
+    .o_liquid_login_orb--three,
+    .o_liquid_login_grain {
+        display: none;
+    }
+}
+
+@media (max-height: 720px) and (min-width: 576px) {
+    .o_liquid_login_shell.container {
+        padding-block: 1rem !important;
+    }
+
+    .o_liquid_login_identity p {
+        display: none;
+    }
+
+    .o_liquid_login_logo {
+        min-height: 4rem;
+        margin-bottom: 0.9rem !important;
+    }
+
+    .o_liquid_login_company_logo {
+        max-height: 3.8rem !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .o_liquid_login_page *,
+    .o_liquid_login_page *::before,
+    .o_liquid_login_page *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}
+
+@media (prefers-contrast: more) {
+    .o_liquid_login_card.card,
+    .o_liquid_login_form .form-control,
+    .o_liquid_login_theme_toggle {
+        border-color: var(--lg-login-border-strong) !important;
+    }
+
+    .o_liquid_login_form .form-label,
+    .o_liquid_login_form .col-form-label {
+        color: var(--lg-login-ink);
+    }
+}

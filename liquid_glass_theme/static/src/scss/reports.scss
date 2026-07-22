@@ -1,0 +1,79 @@
+/* Pivot, graph, activity and report preview surfaces. */
+
+.o_pivot_view,
+.o_graph_view,
+.o_activity_view { background: transparent !important; color: var(--lg-text-primary); }
+
+.o_pivot {
+    margin: var(--lg-space-3);
+    overflow: auto;
+    border: 1px solid var(--lg-border);
+    border-radius: var(--lg-radius-md);
+    background: var(--lg-surface-solid);
+    box-shadow: var(--lg-shadow-sm);
+}
+
+.o_pivot table { margin: 0; background: transparent !important; color: var(--lg-text-primary); }
+.o_pivot table :where(th, td) { border-color: var(--lg-border-soft) !important; font-variant-numeric: tabular-nums lining-nums; }
+.o_pivot table th {
+    background: var(--lg-table-head) !important;
+    color: var(--lg-text-secondary) !important;
+}
+.o_pivot table td {
+    background: var(--lg-surface-solid) !important;
+    color: var(--lg-text-primary) !important;
+}
+.o_pivot :where(.o_pivot_header_cell_closed, .o_pivot_header_cell_opened, .o_pivot_measure_row, .o_pivot_origin_row) { background: var(--lg-table-head) !important; color: var(--lg-text-secondary) !important; }
+.o_pivot .o_pivot_cell_value { background: var(--lg-surface-solid) !important; color: var(--lg-text-primary) !important; }
+.o_pivot .o_pivot_cell_value:hover,
+.o_pivot .o_pivot_measure_row:hover { background: var(--lg-table-hover) !important; }
+.o_pivot :where(.o_pivot_sort_order_asc, .o_pivot_sort_order_desc) { color: var(--lg-primary); }
+.o_pivot_buttons { gap: var(--lg-space-2); }
+
+.o_graph_renderer {
+    margin: var(--lg-space-3);
+    overflow: hidden;
+    border: 1px solid var(--lg-border) !important;
+    border-radius: var(--lg-radius-lg);
+    background: var(--lg-surface-solid) !important;
+    color: var(--lg-text-primary);
+    box-shadow: var(--lg-shadow-sm);
+}
+.o_graph_renderer .o_graph_canvas_container { min-block-size: 20rem; padding: var(--lg-space-4) !important; }
+.o_graph_renderer .o_graph_custom_tooltip { border-color: var(--lg-border); background: var(--lg-surface-solid) !important; color: var(--lg-text-primary); }
+.o_graph_renderer .o_graph_custom_tooltip .o_value { font-variant-numeric: tabular-nums; }
+
+.o_activity_view {
+    margin: var(--lg-space-3);
+    overflow: auto;
+    border: 1px solid var(--lg-border);
+    border-radius: var(--lg-radius-md);
+    background: var(--lg-surface-solid) !important;
+    box-shadow: var(--lg-shadow-sm);
+}
+.o_activity_view .o_activity_view_table { margin: 0 !important; background: transparent !important; color: var(--lg-text-primary); }
+.o_activity_view .o_activity_view_table :where(th, td) { border-color: var(--lg-border-soft) !important; background: transparent; color: var(--lg-text-primary) !important; }
+.o_activity_view .o_activity_view_table thead th { background: var(--lg-table-head) !important; color: var(--lg-text-secondary) !important; }
+.o_activity_view .o_activity_record:hover { background: var(--lg-table-hover) !important; }
+
+.o_report_viewer,
+.o_action_manager .o_report_layout { background: var(--lg-surface-solid) !important; color: var(--lg-text-primary); }
+.o_report_viewer iframe { border: 1px solid var(--lg-border); border-radius: var(--lg-radius-md); background: #fff; }
+
+/* Printing stays formal: no glass, image, transparency or dark canvas. */
+@media print {
+    body.o_web_client { color: #111 !important; background: #fff !important; }
+    .o_form_view .o_form_sheet,
+    .o_list_renderer,
+    .o_pivot,
+    .o_graph_renderer,
+    .o_activity_view,
+    .o_account_kanban .o_kanban_record {
+        border-color: #bbb !important;
+        background: #fff !important;
+        color: #111 !important;
+        box-shadow: none !important;
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+    }
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_moadian_export" model="ir.actions.server">
+        <field name="name">خروجی اکسل مودیان</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+ids = ','.join(str(i) for i in records.ids)
+action = {'type': 'ir.actions.act_url', 'url': '/moadian/export?ids=%s' % ids, 'target': 'new'}
+        </field>
+    </record>
+</odoo>

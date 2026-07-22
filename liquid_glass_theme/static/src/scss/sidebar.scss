@@ -1,0 +1,427 @@
+/* Optional persistent Owl sidebar plus Odoo 18 native mobile app drawer. */
+
+.o_lg_sidebar,
+.o_liquid_sidebar {
+    position: fixed;
+    z-index: var(--lg-z-sidebar);
+    inset-block: var(--lg-navbar-height) 0;
+    inset-inline-start: 0;
+    inline-size: var(--lg-sidebar-width);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-inline-end: 1px solid var(--lg-border);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .08), transparent 36%),
+        var(--lg-surface-strong);
+    color: var(--lg-text-primary);
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-md);
+    -webkit-backdrop-filter: blur(var(--lg-blur-lg)) saturate(var(--lg-saturation));
+    backdrop-filter: blur(var(--lg-blur-lg)) saturate(var(--lg-saturation));
+    transition: inline-size var(--lg-duration-slow) var(--lg-ease-standard), transform var(--lg-duration-slow) var(--lg-ease-standard);
+}
+
+/*
+ * The Odoo web-client keeps its root direction LTR even when the locale uses
+ * `.o_rtl`.  The sidebar itself is explicitly RTL/right-aligned, therefore
+ * physical right margins are required here; logical margin-inline-start would
+ * incorrectly reserve space on the left and let the content sit under it.
+ */
+body.o_lg_sidebar_enabled .o_action_manager {
+    margin-right: var(--lg-sidebar-width);
+    margin-left: 0;
+}
+body.o_lg_sidebar_enabled.o_lg_sidebar_collapsed .o_action_manager {
+    margin-right: var(--lg-sidebar-collapsed-width);
+    margin-left: 0;
+}
+body.o_lg_sidebar_collapsed .o_lg_sidebar,
+html.liquid-sidebar-collapsed .o_liquid_sidebar,
+.o_liquid_sidebar.is-collapsed { inline-size: var(--lg-sidebar-collapsed-width); }
+
+.o_lg_sidebar_header,
+.o_liquid_sidebar_header {
+    display: flex;
+    align-items: center;
+    gap: var(--lg-space-2);
+    min-block-size: 4rem;
+    padding: var(--lg-space-3);
+    border-block-end: 1px solid var(--lg-border-soft);
+}
+
+.o_lg_sidebar_search,
+.o_liquid_sidebar_search {
+    margin: var(--lg-space-3);
+    min-block-size: var(--lg-control-height);
+    display: flex;
+    align-items: center;
+    gap: var(--lg-space-2);
+    padding-inline: var(--lg-space-3);
+    border: 1px solid var(--lg-border);
+    border-radius: var(--lg-radius-sm);
+    background: var(--lg-surface-solid);
+    color: var(--lg-text-primary);
+}
+
+.o_lg_sidebar_search input,
+.o_liquid_sidebar_search input,
+.o_liquid_app_grid_search input {
+    min-inline-size: 0;
+    flex: 1 1 auto;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--lg-text-primary);
+    box-shadow: none;
+}
+
+.o_lg_sidebar_search input::placeholder,
+.o_liquid_sidebar_search input::placeholder,
+.o_liquid_app_grid_search input::placeholder { color: var(--lg-text-muted); opacity: 1; }
+
+.o_lg_sidebar_search:focus-within,
+.o_liquid_sidebar_search:focus-within {
+    border-color: var(--lg-primary);
+    box-shadow: var(--lg-focus-ring);
+}
+
+.o_liquid_search_clear,
+.o_liquid_icon_button {
+    min-inline-size: 2.25rem;
+    min-block-size: 2.25rem;
+    display: inline-grid;
+    place-items: center;
+    border: 0;
+    border-radius: var(--lg-radius-xs);
+    background: transparent;
+    color: var(--lg-text-muted);
+}
+.o_liquid_search_clear:hover,
+.o_liquid_icon_button:hover { background: var(--lg-primary-soft); color: var(--lg-primary); }
+.o_liquid_search_clear:focus-visible,
+.o_liquid_icon_button:focus-visible {
+    outline: 0;
+    color: var(--lg-primary);
+    box-shadow: var(--lg-focus-ring);
+}
+
+.o_lg_sidebar_nav,
+.o_liquid_sidebar_nav { flex: 1 1 auto; overflow: auto; padding: 0 var(--lg-space-2) var(--lg-space-4); }
+.o_lg_sidebar_group_title { padding: var(--lg-space-4) var(--lg-space-3) var(--lg-space-2); color: var(--lg-text-muted); font-size: .75rem; font-weight: 700; }
+
+.o_lg_sidebar :where(.o_lg_sidebar_app, .o_lg_sidebar_menu) {
+    inline-size: 100%;
+    min-block-size: var(--lg-touch-target);
+    display: flex;
+    align-items: center;
+    gap: var(--lg-space-3);
+    margin-block: .125rem;
+    padding-inline: var(--lg-space-3);
+    border: 1px solid transparent;
+    border-radius: var(--lg-radius-sm);
+    background: transparent;
+    color: var(--lg-text-secondary);
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color var(--lg-duration-fast), background-color var(--lg-duration-fast), border-color var(--lg-duration-fast), transform var(--lg-duration-fast);
+}
+
+.o_lg_sidebar :where(.o_lg_sidebar_app, .o_lg_sidebar_menu):hover,
+.o_lg_sidebar :where(.o_lg_sidebar_app, .o_lg_sidebar_menu).active,
+.o_lg_sidebar :where(.o_lg_sidebar_app, .o_lg_sidebar_menu).is-active,
+.o_lg_sidebar :where(.o_lg_sidebar_app, .o_lg_sidebar_menu)[aria-current="page"] {
+    border-color: var(--lg-primary-border);
+    background: var(--lg-primary-soft);
+    color: var(--lg-primary);
+}
+
+.o_lg_sidebar :where(.o_lg_sidebar_app, .o_lg_sidebar_menu):focus-visible {
+    outline: 0;
+    border-color: var(--lg-primary);
+    box-shadow: var(--lg-focus-ring);
+}
+
+.o_lg_sidebar .o_liquid_menu_item.is-loading {
+    cursor: progress;
+    opacity: .72;
+}
+
+[dir="rtl"] .o_lg_sidebar :where(.o_lg_sidebar_app, .o_lg_sidebar_menu):hover { transform: translateX(-2px); }
+[dir="ltr"] .o_lg_sidebar :where(.o_lg_sidebar_app, .o_lg_sidebar_menu):hover { transform: translateX(2px); }
+
+.o_lg_sidebar_app_icon { inline-size: 2rem; block-size: 2rem; flex: 0 0 auto; border-radius: .65rem; object-fit: cover; }
+.o_liquid_app_icon {
+    inline-size: 3rem;
+    block-size: 3rem;
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: .9rem;
+    background: var(--lg-primary-soft);
+    color: var(--lg-primary);
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-sm);
+}
+.o_liquid_app_icon--small { inline-size: 2.25rem; block-size: 2.25rem; border-radius: .7rem; }
+.o_liquid_app_icon_image { inline-size: 100%; block-size: 100%; object-fit: cover; }
+.o_liquid_app_icon_glyph,
+.o_liquid_app_icon_fallback {
+    inline-size: 100%;
+    block-size: 100%;
+    display: grid;
+    place-items: center;
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+.o_liquid_app_icon--small :where(.o_liquid_app_icon_glyph, .o_liquid_app_icon_fallback) { font-size: 1rem; }
+.o_liquid_sidebar_app { min-inline-size: 0; flex: 1 1 auto; }
+.o_liquid_sidebar_app_name,
+.o_liquid_sidebar_label { min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; }
+.o_liquid_sidebar_close { flex: 0 0 auto; }
+
+.o_liquid_all_apps_button,
+.o_liquid_sidebar_collapse {
+    min-block-size: var(--lg-touch-target);
+    display: flex;
+    align-items: center;
+    gap: var(--lg-space-3);
+    margin: var(--lg-space-2);
+    padding-inline: var(--lg-space-3);
+    border: 1px solid var(--lg-border);
+    border-radius: var(--lg-radius-sm);
+    background: var(--lg-surface-soft);
+    color: var(--lg-text-secondary);
+}
+.o_liquid_all_apps_button:hover,
+.o_liquid_sidebar_collapse:hover { border-color: var(--lg-primary-border); background: var(--lg-primary-soft); color: var(--lg-primary); }
+.o_liquid_sidebar_footer { border-block-start: 1px solid var(--lg-border-soft); }
+.o_liquid_sidebar_collapse { inline-size: calc(100% - var(--lg-space-4)); }
+.o_liquid_menu_initial { inline-size: 1.75rem; block-size: 1.75rem; display: grid; place-items: center; flex: 0 0 auto; border-radius: .55rem; background: var(--lg-surface-soft); color: var(--lg-text-muted); font-size: .75rem; font-weight: 700; }
+.o_liquid_menu_group {
+    display: flex;
+    align-items: center;
+    gap: var(--lg-space-2);
+}
+.o_liquid_menu_group_marker {
+    inline-size: .4rem;
+    block-size: .4rem;
+    flex: 0 0 auto;
+    border-radius: 999px;
+    background: var(--lg-border-highlight);
+}
+.o_liquid_menu_group.is-active-parent { color: var(--lg-primary); }
+.o_liquid_menu_group.is-active-parent .o_liquid_menu_group_marker { background: var(--lg-primary); box-shadow: 0 0 0 .2rem var(--lg-primary-soft); }
+.o_liquid_menu_loading,
+.o_liquid_app_loading { color: var(--lg-primary); }
+.o_liquid_sidebar_empty,
+.o_liquid_app_grid_empty { display: grid; justify-items: center; gap: var(--lg-space-2); padding: var(--lg-space-6); color: var(--lg-text-muted); text-align: center; }
+.o_liquid_sr_only { position: absolute !important; inline-size: 1px !important; block-size: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important; }
+.o_lg_sidebar_collapsed .o_lg_sidebar_label,
+.o_lg_sidebar_collapsed .o_lg_sidebar_search,
+.o_lg_sidebar_collapsed .o_lg_sidebar_group_title,
+.o_liquid_sidebar.is-collapsed .o_lg_sidebar_label,
+.o_liquid_sidebar.is-collapsed .o_lg_sidebar_search,
+.o_liquid_sidebar.is-collapsed .o_lg_sidebar_group_title { display: none; }
+.o_lg_sidebar_collapsed .o_lg_sidebar :where(.o_lg_sidebar_app, .o_lg_sidebar_menu) { justify-content: center; padding-inline: 0; }
+.o_liquid_sidebar.is-collapsed :where(.o_lg_sidebar_app, .o_lg_sidebar_menu) { justify-content: center; padding-inline: 0; }
+
+.o_lg_sidebar_backdrop,
+.o_liquid_sidebar_backdrop {
+    position: fixed;
+    z-index: calc(var(--lg-z-sidebar) - 1);
+    inset: 0;
+    padding: 0;
+    border: 0;
+    background: var(--lg-backdrop);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+
+/* Odoo's existing small-screen app sidebar remains fully functional. */
+.o_app_menu_sidebar {
+    z-index: var(--lg-z-sidebar);
+    inline-size: unquote("min(88vw, 22rem)");
+    border-inline-end: 1px solid var(--lg-border);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .08), transparent 36%),
+        var(--lg-surface-strong) !important;
+    color: var(--lg-text-primary);
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-lg);
+    -webkit-backdrop-filter: blur(var(--lg-blur-lg)) saturate(var(--lg-saturation));
+    backdrop-filter: blur(var(--lg-blur-lg)) saturate(var(--lg-saturation));
+}
+
+.o_app_menu_sidebar .o_sidebar_topbar { min-block-size: 4rem; border-block-end: 1px solid var(--lg-border-soft); }
+.o_app_menu_sidebar .o_burger_menu_content { padding: var(--lg-space-2); }
+.o_app_menu_sidebar .o_burger_menu_content li {
+    min-block-size: var(--lg-touch-target);
+    margin-block: .125rem;
+    padding-inline: var(--lg-space-3) !important;
+    border-radius: var(--lg-radius-sm);
+    color: var(--lg-text-secondary);
+}
+.o_app_menu_sidebar .o_burger_menu_content li:hover,
+.o_app_menu_sidebar .o_burger_menu_content li.bg-primary-subtle { background: var(--lg-primary-soft) !important; color: var(--lg-primary); }
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    .o_lg_sidebar,
+    .o_app_menu_sidebar { background: var(--lg-surface-fallback) !important; }
+}
+
+/* Full real-app launcher supplied by the Owl shell extension. */
+.o_liquid_app_grid_backdrop {
+    position: fixed;
+    z-index: 0;
+    inset: 0;
+    padding: 0;
+    border: 0;
+    pointer-events: auto;
+    background: var(--lg-backdrop);
+    -webkit-backdrop-filter: blur(7px) saturate(115%);
+    backdrop-filter: blur(7px) saturate(115%);
+}
+
+.o_liquid_app_grid {
+    position: fixed;
+    z-index: calc(var(--lg-z-overlay) + 1);
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: clamp(.75rem, 3vw, 2rem);
+    pointer-events: none;
+    isolation: isolate;
+    animation: lg-app-grid-fade-in var(--lg-duration-base) var(--lg-ease-standard) both;
+}
+
+html.liquid-app-grid-open,
+html.liquid-app-grid-open body { overflow: hidden; }
+
+.o_liquid_app_grid_panel {
+    position: relative;
+    z-index: 1;
+    inline-size: unquote("min(68rem, 100%)");
+    max-block-size: unquote("min(88dvh, 54rem)");
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    pointer-events: auto;
+    border: 1px solid var(--lg-border);
+    border-radius: var(--lg-radius-xl);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .10), transparent 32%),
+        var(--lg-surface-strong);
+    color: var(--lg-text-primary);
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-lg);
+    -webkit-backdrop-filter: blur(var(--lg-blur-lg)) saturate(var(--lg-saturation));
+    backdrop-filter: blur(var(--lg-blur-lg)) saturate(var(--lg-saturation));
+    animation: lg-app-grid-panel-in var(--lg-duration-slow) var(--lg-ease-standard) both;
+}
+
+.o_liquid_app_grid_header {
+    display: flex;
+    align-items: center;
+    gap: var(--lg-space-3);
+    padding: var(--lg-space-5);
+    border-block-end: 1px solid var(--lg-border-soft);
+}
+
+.o_liquid_app_grid_header > div { min-inline-size: 0; flex: 1 1 auto; }
+.o_liquid_app_grid_header :where(h2, p) { margin: 0; }
+.o_liquid_app_grid_header h2 { color: var(--lg-text-primary); font-size: clamp(1.15rem, 2vw, 1.5rem); font-weight: 800; }
+.o_liquid_app_grid_header p { margin-block-start: .25rem; color: var(--lg-text-muted); font-size: .85rem; }
+
+.o_liquid_app_grid_search {
+    min-block-size: var(--lg-control-height);
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: var(--lg-space-2);
+    padding-inline: var(--lg-space-3);
+    border: 1px solid var(--lg-border);
+    border-radius: var(--lg-radius-sm);
+    background: var(--lg-surface-solid);
+    color: var(--lg-text-primary);
+    margin: var(--lg-space-4) var(--lg-space-5) 0;
+}
+.o_liquid_app_grid_search:focus-within { border-color: var(--lg-primary); box-shadow: var(--lg-focus-ring); }
+
+.o_liquid_app_grid_scroll { min-block-size: 0; overflow: auto; padding: var(--lg-space-5); }
+.o_liquid_app_grid_items { display: grid; grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr)); gap: var(--lg-space-3); }
+
+.o_liquid_app_card {
+    min-block-size: 7.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--lg-space-2);
+    padding: var(--lg-space-4);
+    border: 1px solid var(--lg-border);
+    border-radius: var(--lg-radius-lg);
+    background:
+        linear-gradient(155deg, rgba(255, 255, 255, .08), transparent 45%),
+        var(--lg-surface);
+    color: var(--lg-text-primary);
+    text-align: center;
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-sm);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    transition: transform var(--lg-duration-base) var(--lg-ease-standard), border-color var(--lg-duration-base), box-shadow var(--lg-duration-base), background-color var(--lg-duration-base);
+}
+.o_liquid_app_card:hover,
+.o_liquid_app_card:focus-visible { border-color: var(--lg-primary-border); background-color: var(--lg-primary-soft); box-shadow: var(--lg-inner-light), var(--lg-shadow-md); }
+.o_liquid_app_card :where(img, .o_app_icon, .o_liquid_app_icon) { inline-size: 3rem; block-size: 3rem; border-radius: .9rem; object-fit: cover; box-shadow: var(--lg-inner-light), var(--lg-shadow-sm); }
+.o_liquid_app_card.is-current { border-color: var(--lg-primary-border); background: var(--lg-primary-soft); }
+.o_liquid_app_card.is-loading { cursor: progress; opacity: .78; }
+.o_liquid_app_card_name {
+    max-inline-size: 100%;
+    overflow: hidden;
+    color: var(--lg-text-primary);
+    font-weight: 700;
+    line-height: 1.45;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.o_liquid_app_card .o_liquid_app_loading { position: absolute; inset-block-start: var(--lg-space-2); inset-inline-end: var(--lg-space-2); }
+.o_liquid_app_card { position: relative; }
+
+@keyframes lg-app-grid-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes lg-app-grid-panel-in {
+    from { opacity: 0; transform: translateY(.75rem) scale(.985); }
+    to { opacity: 1; transform: none; }
+}
+
+@media (hover: hover) {
+    .o_liquid_app_card:hover { transform: translateY(-3px) scale(1.01); }
+}
+
+@media (max-width: 575.98px) {
+    .o_liquid_app_grid { padding: .5rem; }
+    .o_liquid_app_grid_panel { inline-size: 100%; block-size: calc(100dvh - 1rem); max-block-size: calc(100dvh - 1rem); border-radius: var(--lg-radius-lg); }
+    .o_liquid_app_grid_header,
+    .o_liquid_app_grid_scroll { padding: var(--lg-space-3); }
+    .o_liquid_app_grid_search { margin: var(--lg-space-3) var(--lg-space-3) 0; }
+    .o_liquid_app_grid_items { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--lg-space-2); }
+    .o_liquid_app_card { min-block-size: 6.5rem; padding: var(--lg-space-3); }
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    .o_liquid_app_grid_panel,
+    .o_liquid_sidebar { background: var(--lg-surface-fallback); }
+    .o_liquid_app_grid_backdrop,
+    .o_liquid_sidebar_backdrop { background: rgba(6, 12, 24, .78); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .o_liquid_sidebar,
+    .o_liquid_app_grid,
+    .o_liquid_app_grid_panel,
+    .o_liquid_app_card { animation: none !important; transition-duration: .01ms !important; }
+}

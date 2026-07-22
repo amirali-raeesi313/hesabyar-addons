@@ -1,0 +1,79 @@
+/* داشبورد اتوپایلوت — سازگار با تم Liquid Glass (متغیرهای --lg-*) */
+.ap_root { height: 100%; overflow: auto; }
+.ap_wrap { max-width: 1240px; margin: 0 auto; padding: 22px 18px 60px; }
+.ap_head { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.ap_head h1 { font-size: 26px; margin: 0; }
+.ap_date { color: var(--lg-muted, #888); }
+.ap_refresh { margin-inline-start: auto; }
+
+.ap_grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+@media (max-width: 900px) { .ap_grid { grid-template-columns: 1fr; } }
+
+.ap_card {
+    background: var(--lg-glass-strong, rgba(255,255,255,.8));
+    border: 1px solid var(--lg-border, rgba(0,0,0,.1));
+    border-radius: 16px;
+    box-shadow: var(--lg-shadow, 0 6px 20px rgba(0,0,0,.08));
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    overflow: hidden;
+}
+.ap_card_head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px; font-weight: bold;
+    border-bottom: 1px solid var(--lg-border-soft, rgba(0,0,0,.06));
+}
+.ap_num { font-size: 26px; font-variant-numeric: tabular-nums; }
+.ap_card_head.ok .ap_num { color: var(--lg-green, #059669); }
+.ap_card_head.warn .ap_num { color: var(--lg-amber, #b45309); }
+.ap_card_head.danger .ap_num { color: var(--lg-red, #dc2626); }
+.ap_card_head.accent .ap_num { color: var(--lg-accent, #2563eb); }
+.ap_badges { margin-inline-start: auto; display: flex; gap: 6px; }
+.ap_b { border-radius: 999px; padding: 0 10px; font-size: 12px; }
+.ap_b.danger { background: rgba(220,38,38,.15); color: var(--lg-red, #dc2626); }
+.ap_b.warn { background: rgba(180,83,9,.15); color: var(--lg-amber, #b45309); }
+.ap_b.info { background: rgba(37,99,235,.12); color: var(--lg-accent, #2563eb); }
+
+.ap_rows { display: flex; flex-direction: column; }
+.ap_row {
+    display: flex; justify-content: space-between; gap: 10px;
+    padding: 10px 16px; cursor: pointer;
+    border-bottom: 1px solid var(--lg-border-soft, rgba(0,0,0,.05));
+    color: inherit; text-decoration: none;
+}
+.ap_row:last-child { border-bottom: none; }
+.ap_row:hover { background: var(--lg-accent-soft, rgba(37,99,235,.07)); }
+.ap_row b { font-variant-numeric: tabular-nums; }
+.ap_row.col { flex-direction: column; align-items: flex-start; gap: 3px; }
+.ap_ex_name { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.ap_sugg { color: var(--lg-muted, #777); }
+.ap_dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex: none; }
+.ap_dot.critical { background: var(--lg-red, #dc2626); }
+.ap_dot.warning { background: var(--lg-amber, #b45309); }
+.ap_dot.info { background: var(--lg-accent, #2563eb); }
+.ap_empty { padding: 16px; color: var(--lg-muted, #888); }
+
+.ap_chat {
+    margin-top: 20px;
+    background: var(--lg-glass-strong, rgba(255,255,255,.8));
+    border: 1px solid var(--lg-border, rgba(0,0,0,.1));
+    border-radius: 16px;
+    padding: 16px;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+.ap_chat_title { font-weight: bold; margin-bottom: 10px; }
+.ap_chat_row { display: flex; gap: 10px; align-items: stretch; }
+.ap_chat_input {
+    flex: 1; resize: vertical;
+    background: var(--lg-input, #fff);
+    color: var(--lg-text, #222);
+    border: 1px solid var(--lg-border, rgba(0,0,0,.15));
+    border-radius: 12px; padding: 10px 12px; font: inherit;
+}
+.ap_ask { min-width: 120px; border-radius: 12px; }
+.ap_answer {
+    margin-top: 14px; white-space: pre-wrap; line-height: 2;
+    border-top: 1px dashed var(--lg-border, rgba(0,0,0,.15));
+    padding-top: 12px;
+}

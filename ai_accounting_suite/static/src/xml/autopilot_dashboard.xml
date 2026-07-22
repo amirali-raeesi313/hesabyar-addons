@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+<t t-name="ai_accounting_suite.AutopilotDashboard">
+    <div class="ap_root o_action">
+        <div class="ap_wrap">
+            <div class="ap_head">
+                <h1>🚀 اتوپایلوت</h1>
+                <span class="ap_date" t-if="state.data" t-esc="state.data.date"/>
+                <button class="btn btn-secondary ap_refresh" t-on-click="reload">↺ به‌روزرسانی</button>
+            </div>
+
+            <div t-if="state.error" class="alert alert-danger" t-esc="state.error"/>
+
+            <div t-if="state.data" class="ap_grid">
+                <!-- ۱) کارهای خودکار -->
+                <div class="ap_card">
+                    <div class="ap_card_head ok">
+                        <span class="ap_num" t-esc="state.data.auto_total"/>
+                        <span>عملیات ثبت‌شده توسط سیستم</span>
+                    </div>
+                    <div class="ap_rows">
+                        <t t-foreach="state.data.auto_ops" t-as="it" t-key="it.label">
+                            <a class="ap_row" t-on-click="() => this.openList(it)">
+                                <span t-esc="it.label"/>
+                                <b t-esc="it.count"/>
+                            </a>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- ۲) نیازمند تصمیم مدیر -->
+                <div class="ap_card">
+                    <div class="ap_card_head warn">
+                        <span class="ap_num" t-esc="state.data.approval_total"/>
+                        <span>مورد نیازمند تصمیم شما</span>
+                    </div>
+                    <div class="ap_rows">
+                        <t t-foreach="state.data.approvals" t-as="it" t-key="it.label">
+                            <a class="ap_row" t-on-click="() => this.openList(it)">
+                                <span t-esc="it.label"/>
+                                <b t-esc="it.count"/>
+                            </a>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- ۳) استثناها و خطرها -->
+                <div class="ap_card">
+                    <div class="ap_card_head danger" t-on-click="openExceptions" style="cursor:pointer">
+                        <span class="ap_num" t-esc="state.data.exceptions.critical + state.data.exceptions.warning + state.data.exceptions.info"/>
+                        <span>استثنا و خطر باز</span>
+                        <span class="ap_badges">
+                            <span class="ap_b danger" t-esc="state.data.exceptions.critical"/>
+                            <span class="ap_b warn" t-esc="state.data.exceptions.warning"/>
+                            <span class="ap_b info" t-esc="state.data.exceptions.info"/>
+                        </span>
+                    </div>
+                    <div class="ap_rows">
+                        <t t-if="!state.data.exceptions.items.length">
+                            <div class="ap_empty">✅ استثنایی شناسایی نشده — همه‌چیز عادی است.</div>
+                        </t>
+                        <t t-foreach="state.data.exceptions.items" t-as="ex" t-key="ex.id">
+                            <a class="ap_row col" t-on-click="openExceptions">
+                                <span class="ap_ex_name">
+                                    <span t-attf-class="ap_dot {{ex.severity}}"/>
+                                    <t t-esc="ex.name"/>
+                                </span>
+                                <small t-if="ex.suggestion" class="ap_sugg">پیشنهاد: <t t-esc="ex.suggestion"/></small>
+                            </a>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- ۴) پیشنهادهای هوشمند -->
+                <div class="ap_card">
+                    <div class="ap_card_head accent">
+                        <span class="ap_num" t-esc="state.data.suggestions.length"/>
+                        <span>پیشنهاد هوشمند</span>
+                    </div>
+                    <div class="ap_rows">
+                        <t t-if="!state.data.suggestions.length">
+                            <div class="ap_empty">هنوز پیشنهادی ثبت نشده — گزارش‌های هفتگی خودکار اینجا می‌آیند.</div>
+                        </t>
+                        <t t-foreach="state.data.suggestions" t-as="sg" t-key="sg_index">
+                            <div class="ap_row col">
+                                <span class="ap_ex_name"><t t-esc="sg.source"/> · <small t-esc="sg.date"/></span>
+                                <small t-esc="sg.text"/>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+
+            <!-- دستیار گفتگویی -->
+            <div class="ap_chat">
+                <div class="ap_chat_title">🤖 مدیر هوشمند — با داده‌های زنده شرکت جواب می‌دهد</div>
+                <div class="ap_chat_row">
+                    <textarea class="ap_chat_input" rows="2"
+                              placeholder="مثلاً: وضعیت نقدینگی این ماه چطور است؟ / بدهکاران مهم امروز چه کسانی‌اند؟"
+                              t-model="state.question" t-on-keydown="onKeydown"/>
+                    <button class="btn btn-primary ap_ask" t-on-click="ask" t-att-disabled="state.asking">
+                        <t t-if="state.asking">در حال فکر کردن…</t>
+                        <t t-else="">بپرس</t>
+                    </button>
+                </div>
+                <div t-if="state.answer" class="ap_answer" t-esc="state.answer"/>
+            </div>
+        </div>
+    </div>
+</t>
+</templates>

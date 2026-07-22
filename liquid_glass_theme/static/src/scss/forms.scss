@@ -1,0 +1,135 @@
+/* Form sheets, fields, widgets, notebook, statusbar and smart buttons. */
+
+.o_form_view { color: var(--lg-text-primary); background: transparent !important; }
+.o_form_view .o_form_sheet_bg { padding-block: var(--lg-space-5); background: transparent !important; }
+
+.o_form_view .o_form_sheet {
+    border: 1px solid var(--lg-border) !important;
+    border-radius: var(--lg-radius-xl) !important;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .075), transparent 34%),
+        var(--lg-surface-strong) !important;
+    color: var(--lg-text-primary);
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-md);
+    -webkit-backdrop-filter: blur(var(--lg-blur-md)) saturate(135%);
+    backdrop-filter: blur(var(--lg-blur-md)) saturate(135%);
+}
+
+.o_form_view .o_inner_group { gap: var(--lg-space-2) var(--lg-space-4); }
+.o_form_view :where(.o_form_label, .o_td_label) { color: var(--lg-text-secondary); font-weight: 600; }
+.o_form_view .o_horizontal_separator { color: var(--lg-text-primary); border-color: var(--lg-border-soft); font-weight: 700; }
+
+.o_form_view :where(.o_input, input.form-control, select.form-select, textarea.form-control),
+.o_dialog :where(.o_input, input.form-control, select.form-select, textarea.form-control) {
+    min-block-size: var(--lg-control-height);
+    border: 1px solid var(--lg-border) !important;
+    border-radius: var(--lg-radius-sm) !important;
+    background: var(--lg-surface-solid) !important;
+    color: var(--lg-text-primary) !important;
+    box-shadow: var(--lg-inner-light);
+    transition: border-color var(--lg-duration-fast), box-shadow var(--lg-duration-fast), background-color var(--lg-duration-fast);
+}
+
+.o_form_view textarea.o_input,
+.o_dialog textarea.o_input { min-block-size: 5.5rem; resize: vertical; }
+
+.o_form_view :where(.o_input, .form-control, .form-select):hover,
+.o_dialog :where(.o_input, .form-control, .form-select):hover { border-color: var(--lg-border-strong) !important; }
+
+.o_form_view :where(.o_input, .form-control, .form-select):focus,
+.o_form_view .o_field_widget:focus-within > :where(.o_input, .form-control, .form-select),
+.o_dialog :where(.o_input, .form-control, .form-select):focus {
+    border-color: var(--lg-primary) !important;
+    outline: 0;
+    box-shadow: var(--lg-focus-ring), var(--lg-inner-light);
+}
+
+.o_form_view .o_field_widget.o_field_invalid :where(.o_input, .form-control, .form-select),
+.o_form_view .o_field_invalid :where(.o_input, .form-control, .form-select),
+.o_dialog .o_field_invalid :where(.o_input, .form-control, .form-select) {
+    border-color: var(--lg-danger) !important;
+    background-image: linear-gradient(90deg, var(--lg-danger-soft), transparent 28%) !important;
+    box-shadow: 0 0 0 2px var(--lg-danger-soft);
+}
+
+.o_form_view :where(.o_readonly_modifier, .o_field_readonly) :where(.o_input, .form-control),
+.o_form_view :where(.o_input, .form-control):read-only {
+    border-color: transparent !important;
+    background: transparent !important;
+    color: var(--lg-text-primary) !important;
+    box-shadow: none;
+}
+
+.o_form_view :where(.o_input, .form-control, .form-select):disabled,
+.o_form_view .o_field_widget[aria-disabled="true"] { color: var(--lg-text-disabled) !important; opacity: .72; }
+
+.o_form_view .o_required_modifier.o_form_label,
+.o_form_view .o_form_label.o_field_invalid { color: var(--lg-danger); }
+
+.o_form_view :where(.o_field_many2one, .o_field_many2many, .o_field_reference) .o_external_button,
+.o_form_view :where(.o_field_many2one, .o_field_many2many, .o_field_reference) .o_dropdown_button {
+    min-inline-size: var(--lg-control-height);
+    color: var(--lg-text-muted);
+    border-radius: var(--lg-radius-xs);
+}
+
+.o_field_widget.o_field_many2many_tags .badge,
+.o_field_widget.o_field_many2many_tags .o_tag {
+    border: 1px solid var(--lg-border);
+    background: var(--lg-primary-soft) !important;
+    color: var(--lg-text-primary) !important;
+}
+
+.o_field_widget.o_field_boolean_toggle .form-check-input,
+.o_field_widget.o_field_boolean .form-check-input { min-inline-size: 1.25rem; min-block-size: 1.25rem; }
+.o_field_widget.o_field_radio .form-check { min-block-size: 2rem; align-items: center; }
+
+.o_form_view .o_notebook { margin-block-start: var(--lg-space-4); }
+.o_form_view .o_notebook_headers { border-block-end: 1px solid var(--lg-border-soft); }
+.o_form_view .o_notebook .nav-link { color: var(--lg-text-muted); }
+.o_form_view .o_notebook .nav-link.active { border-color: var(--lg-primary-border); background: var(--lg-primary-soft); color: var(--lg-primary); }
+.o_form_view .o_notebook_content { padding-block-start: var(--lg-space-4); }
+
+.o_form_statusbar {
+    border-block-end: 1px solid var(--lg-border-soft);
+    background: var(--lg-surface) !important;
+    color: var(--lg-text-primary);
+    -webkit-backdrop-filter: blur(var(--lg-blur-sm)) saturate(125%);
+    backdrop-filter: blur(var(--lg-blur-sm)) saturate(125%);
+}
+
+.o_form_statusbar .o_statusbar_status .o_arrow_button {
+    min-block-size: var(--lg-control-height);
+    color: var(--lg-text-secondary);
+}
+.o_form_statusbar .o_statusbar_status .o_arrow_button:hover,
+.o_form_statusbar .o_statusbar_status .o_arrow_button.o_arrow_button_current {
+    color: var(--lg-primary);
+    background: var(--lg-primary-soft);
+}
+
+.o_form_view .o_form_buttonbox { gap: var(--lg-space-2); }
+.o_form_view .oe_stat_button {
+    min-block-size: 3.25rem;
+    border: 1px solid var(--lg-border-soft) !important;
+    border-radius: var(--lg-radius-sm) !important;
+    background: var(--lg-surface-soft) !important;
+    color: var(--lg-text-primary);
+    box-shadow: var(--lg-inner-light);
+}
+.o_form_view .oe_stat_button:hover { border-color: var(--lg-primary-border) !important; background: var(--lg-primary-soft) !important; }
+.o_form_view .oe_stat_button .o_stat_value { color: var(--lg-primary); font-variant-numeric: tabular-nums; }
+
+.o_form_view .o_field_x2many .o_list_renderer {
+    margin-block-start: var(--lg-space-2);
+    border-radius: var(--lg-radius-md);
+    box-shadow: none;
+}
+
+.o_form_view :where(.o_field_binary_file, .o_field_image) .btn { min-block-size: var(--lg-control-height); }
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    .o_form_view .o_form_sheet,
+    .o_form_statusbar { background: var(--lg-surface-fallback) !important; }
+}
+

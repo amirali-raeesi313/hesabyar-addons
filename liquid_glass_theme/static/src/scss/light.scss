@@ -1,0 +1,59 @@
+/* Light Liquid Glass colour system. */
+
+:root,
+html.liquid-light {
+    color-scheme: light;
+    --lg-bg-color: #eaf0f9;
+    --lg-bg-image: url("/liquid_glass_theme/static/img/liquid-pearl.webp");
+    --lg-bg-tint: linear-gradient(155deg, rgba(244, 248, 255, .88), rgba(231, 239, 250, .92) 58%, rgba(224, 234, 248, .95));
+    --lg-bg-glow: radial-gradient(circle at 14% 12%, rgba(89, 156, 255, .17), transparent 34%), radial-gradient(circle at 82% 88%, rgba(126, 96, 255, .10), transparent 32%);
+
+    --lg-surface-soft: rgba(255, 255, 255, .48);
+    --lg-surface: rgba(255, 255, 255, .66);
+    --lg-surface-strong: rgba(255, 255, 255, .82);
+    --lg-surface-solid: rgba(250, 252, 255, .97);
+    --lg-surface-fallback: #f7f9fd;
+    --lg-surface-raised: #ffffff;
+
+    --lg-border-soft: rgba(27, 48, 83, .075);
+    --lg-border: rgba(27, 48, 83, .14);
+    --lg-border-strong: rgba(27, 48, 83, .22);
+    --lg-border-highlight: rgba(255, 255, 255, .96);
+
+    --lg-text-primary: #17233d;
+    --lg-text-secondary: #425171;
+    --lg-text-muted: #65728d;
+    --lg-text-disabled: #8490a7;
+
+    --lg-primary: #1d4ed8;
+    --lg-primary-hover: #1e40af;
+    --lg-primary-soft: rgba(29, 78, 216, .11);
+    --lg-primary-border: rgba(29, 78, 216, .30);
+    --lg-success: #047857;
+    --lg-success-soft: rgba(4, 120, 87, .11);
+    --lg-danger: #b91c1c;
+    --lg-danger-soft: rgba(185, 28, 28, .10);
+    --lg-warning: #92400e;
+    --lg-warning-soft: rgba(146, 64, 14, .12);
+    --lg-info: #0369a1;
+    --lg-info-soft: rgba(3, 105, 161, .11);
+
+    --lg-table-head: #edf3fb;
+    --lg-table-zebra: rgba(31, 65, 115, .025);
+    --lg-table-hover: rgba(29, 78, 216, .065);
+    --lg-table-selected: rgba(29, 78, 216, .12);
+
+    --lg-backdrop: rgba(25, 39, 66, .28);
+    --lg-shadow-sm: 0 4px 14px rgba(39, 58, 94, .08);
+    --lg-shadow-md: 0 14px 38px rgba(39, 58, 94, .13);
+    --lg-shadow-lg: 0 28px 78px rgba(31, 49, 84, .20);
+    --lg-inner-light: inset 0 1px 0 rgba(255, 255, 255, .92);
+    --lg-focus-ring: 0 0 0 3px rgba(29, 78, 216, .28);
+}
+
+html:not(.liquid-dark) .o_web_client {
+    --bs-body-color: var(--lg-text-primary);
+    --bs-body-bg: transparent;
+    --bs-border-color: var(--lg-border);
+    --bs-link-color: var(--lg-primary);
+}

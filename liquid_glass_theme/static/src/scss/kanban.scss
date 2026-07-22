@@ -1,0 +1,59 @@
+/* Generic Kanban cards. Repeated cards use layered colour, not individual blur. */
+
+.o_kanban_renderer { background: transparent !important; color: var(--lg-text-primary); }
+
+.o_kanban_renderer .o_kanban_group:not(.o_column_folded) {
+    border: 1px solid var(--lg-border-soft);
+    border-radius: var(--lg-radius-lg);
+    background: color-mix(in srgb, var(--lg-surface-strong) 74%, transparent);
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-sm);
+}
+
+.o_kanban_renderer .o_kanban_header { color: var(--lg-text-primary); }
+.o_kanban_renderer .o_kanban_header .o_column_title { color: var(--lg-text-secondary); font-weight: 700; }
+
+.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost) {
+    border: 1px solid var(--lg-border) !important;
+    border-radius: var(--lg-radius-lg) !important;
+    background:
+        linear-gradient(155deg, rgba(255, 255, 255, .075), transparent 42%),
+        var(--lg-surface-strong) !important;
+    color: var(--lg-text-primary);
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-sm) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    transition: transform var(--lg-duration-base) var(--lg-ease-standard), border-color var(--lg-duration-base), box-shadow var(--lg-duration-base);
+}
+
+.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost):hover,
+.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost):focus-within {
+    border-color: var(--lg-primary-border) !important;
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-md) !important;
+}
+
+@media (hover: hover) {
+    .o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost):hover { transform: translateY(-2px); }
+}
+
+.o_kanban_renderer .o_kanban_record :where(.o_kanban_record_title, .o_kanban_record_top, strong) { color: var(--lg-text-primary); }
+.o_kanban_renderer .o_kanban_record :where(.text-muted, small) { color: var(--lg-text-muted) !important; }
+.o_kanban_renderer .o_kanban_record .o_kanban_record_bottom { border-block-start-color: var(--lg-border-soft); }
+
+.o_kanban_renderer .o_kanban_quick_create {
+    border: 1px solid var(--lg-border);
+    border-radius: var(--lg-radius-md);
+    background: var(--lg-surface-solid) !important;
+    box-shadow: var(--lg-shadow-md);
+}
+
+.o_kanban_renderer .o_kanban_record.o_kanban_dragged,
+.o_kanban_renderer .o_kanban_record.o_draggable:active { opacity: .78; box-shadow: var(--lg-shadow-lg) !important; }
+.o_kanban_renderer .o_kanban_ghost { border: 1px dashed var(--lg-border); background: transparent !important; box-shadow: none !important; }
+
+.o_kanban_renderer .o_kanban_load_more { border-radius: var(--lg-radius-sm); }
+.o_kanban_renderer .o_kanban_card_manage_pane { border-color: var(--lg-border); background: var(--lg-surface-solid); color: var(--lg-text-primary); }
+
+@supports not (background: color-mix(in srgb, white, black)) {
+    .o_kanban_renderer .o_kanban_group:not(.o_column_folded) { background: var(--lg-surface-strong); }
+}
+

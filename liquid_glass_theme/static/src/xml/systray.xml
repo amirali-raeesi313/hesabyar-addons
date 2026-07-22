@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="liquid_glass_theme.AppsToggle">
+        <div class="o_liquid_systray_item o_liquid_apps_toggle" role="none">
+            <button type="button"
+                    class="o_liquid_systray_button"
+                    role="menuitem"
+                    aria-label="همه برنامه‌ها"
+                    title="همه برنامه‌ها"
+                    data-tooltip="همه برنامه‌ها"
+                    aria-controls="o_liquid_app_grid"
+                    t-att-aria-expanded="shell.appsOpen ? 'true' : 'false'"
+                    t-att-class="{'is-active': shell.appsOpen}"
+                    t-on-click.stop="toggle">
+                <i class="oi oi-apps" aria-hidden="true"/>
+            </button>
+        </div>
+    </t>
+
+    <t t-name="liquid_glass_theme.SidebarToggle">
+        <div class="o_liquid_systray_item o_liquid_sidebar_toggle" role="none">
+            <button type="button"
+                    class="o_liquid_systray_button"
+                    role="menuitem"
+                    aria-controls="o_liquid_sidebar"
+                    t-att-aria-label="label"
+                    t-att-title="label"
+                    t-att-data-tooltip="label"
+                    t-att-aria-expanded="isExpanded ? 'true' : 'false'"
+                    t-att-class="{'is-active': isExpanded}"
+                    t-on-click.stop="toggle">
+                <i class="fa fa-columns" aria-hidden="true"/>
+            </button>
+        </div>
+    </t>
+
+    <t t-name="liquid_glass_theme.ThemeToggle">
+        <div class="o_liquid_systray_item o_liquid_theme_toggle" role="none">
+            <button type="button"
+                    class="o_liquid_systray_button"
+                    role="menuitem"
+                    t-att-aria-label="label"
+                    t-att-title="label"
+                    t-att-data-tooltip="label"
+                    t-att-aria-pressed="theme.isDark ? 'true' : 'false'"
+                    t-att-aria-busy="theme.isReloading ? 'true' : 'false'"
+                    t-att-disabled="theme.isReloading"
+                    t-on-click.stop="toggle">
+                <i t-att-class="iconClass" aria-hidden="true"/>
+                <span t-if="theme.isReloading" class="o_liquid_sr_only">در حال بارگذاری تم</span>
+            </button>
+        </div>
+    </t>
+
+    <t t-name="liquid_glass_theme.Sidebar">
+        <aside id="o_liquid_sidebar"
+               class="o_liquid_sidebar o_lg_sidebar lg-glass-sidebar"
+               dir="rtl"
+               aria-label="پیمایش اصلی"
+               t-ref="sidebarPanel"
+               t-att-aria-hidden="ui.isSmall and !shell.mobileOpen ? 'true' : undefined"
+               t-att-inert="ui.isSmall and !shell.mobileOpen"
+               t-att-class="{
+                   'is-collapsed': !ui.isSmall and shell.collapsed,
+                   'is-mobile': ui.isSmall,
+                   'is-open': ui.isSmall and shell.mobileOpen,
+               }">
+            <header class="o_liquid_sidebar_header o_lg_sidebar_header">
+                <div class="o_liquid_sidebar_app o_lg_sidebar_app" t-att-title="currentApp ? appName(currentApp) : 'منوی اصلی'">
+                    <span class="o_liquid_app_icon o_liquid_app_icon--small o_lg_sidebar_app_icon" aria-hidden="true">
+                        <img t-if="currentApp and appIconData(currentApp)"
+                             class="o_liquid_app_icon_image"
+                             t-att-src="appIconData(currentApp)"
+                             alt=""/>
+                        <span t-elif="currentApp and appIconSpec(currentApp)"
+                              class="o_liquid_app_icon_glyph"
+                              t-att-style="appIconStyle(currentApp)">
+                            <i t-att-class="appIconSpec(currentApp).iconClass"/>
+                        </span>
+                        <span t-else="" class="o_liquid_app_icon_fallback">
+                            <t t-esc="currentApp ? appInitial(currentApp) : 'م'"/>
+                        </span>
+                    </span>
+                    <span class="o_liquid_sidebar_app_name o_lg_sidebar_label">
+                        <t t-esc="currentApp ? appName(currentApp) : 'منوی اصلی'"/>
+                    </span>
+                </div>
+                <button t-if="ui.isSmall"
+                        type="button"
+                        class="o_liquid_icon_button o_liquid_sidebar_close"
+                        aria-label="بستن منوی کناری"
+                        title="بستن"
+                        t-on-click.stop="shell.closeMobile">
+                    <i class="fa fa-times" aria-hidden="true"/>
+                </button>
+            </header>
+
+            <button type="button"
+                    class="o_liquid_all_apps_button o_lg_sidebar_app lg-glass-button"
+                    aria-controls="o_liquid_app_grid"
+                    t-att-aria-expanded="shell.appsOpen ? 'true' : 'false'"
+                    title="همه برنامه‌ها"
+                    data-tooltip="همه برنامه‌ها"
+                    t-on-click.stop="shell.openApps">
+                <i class="oi oi-apps" aria-hidden="true"/>
+                <span class="o_liquid_sidebar_label o_lg_sidebar_label">همه برنامه‌ها</span>
+            </button>
+
+            <div t-if="currentApp and (ui.isSmall or !shell.collapsed)"
+                 class="o_liquid_sidebar_search o_lg_sidebar_search lg-glass-input">
+                <label class="o_liquid_sr_only" for="o_liquid_menu_search">جست‌وجو در منوها</label>
+                <i class="fa fa-search" aria-hidden="true"/>
+                <input id="o_liquid_menu_search"
+                       type="search"
+                       inputmode="search"
+                       autocomplete="off"
+                       placeholder="جست‌وجو در منوها…"
+                       aria-label="جست‌وجو در منوهای برنامه جاری"
+                       t-ref="sidebarSearch"
+                       t-model="state.query"
+                       t-on-keydown="onMenuSearchKeydown"/>
+                <button t-if="state.query"
+                        type="button"
+                        class="o_liquid_search_clear"
+                        aria-label="پاک کردن جست‌وجو"
+                        title="پاک کردن"
+                        t-on-click="() => this.state.query = ''">
+                    <i class="fa fa-times" aria-hidden="true"/>
+                </button>
+            </div>
+
+            <nav class="o_liquid_sidebar_nav o_lg_sidebar_nav" aria-label="منوهای برنامه جاری">
+                <t t-if="currentApp">
+                    <t t-foreach="menuEntries" t-as="entry" t-key="entry.menu.id">
+                        <div t-if="entry.isGroup"
+                             class="o_liquid_menu_group o_lg_sidebar_group_title"
+                             t-att-class="{'is-active-parent': isEntryActive(entry)}"
+                             t-att-style="menuDepthStyle(entry)"
+                             t-att-title="entry.breadcrumb">
+                            <span class="o_liquid_menu_group_marker" aria-hidden="true"/>
+                            <span class="o_liquid_sidebar_label o_lg_sidebar_label" t-esc="entry.label"/>
+                        </div>
+                        <button t-else=""
+                                type="button"
+                                class="o_liquid_menu_item o_lg_sidebar_menu"
+                                t-att-class="{
+                                    'is-active': isEntryActive(entry),
+                                    'is-loading': state.busyMenuId === entry.menu.id,
+                                }"
+                                t-att-style="menuDepthStyle(entry)"
+                                t-att-data-menu-xmlid="entry.menu.xmlid"
+                                t-att-title="entry.breadcrumb"
+                                t-att-data-tooltip="entry.breadcrumb"
+                                t-att-aria-current="isEntryActive(entry) and 'page'"
+                                t-att-aria-busy="state.busyMenuId === entry.menu.id ? 'true' : 'false'"
+                                t-on-click="() => this.selectMenu(entry)">
+                            <span class="o_liquid_menu_initial" aria-hidden="true" t-esc="menuInitial(entry)"/>
+                            <span class="o_liquid_sidebar_label o_lg_sidebar_label" t-esc="entry.label"/>
+                            <i t-if="state.busyMenuId === entry.menu.id"
+                               class="fa fa-circle-o-notch fa-spin o_liquid_menu_loading"
+                               aria-hidden="true"/>
+                        </button>
+                    </t>
+
+                    <div t-if="!menuEntries.length" class="o_liquid_sidebar_empty" role="status">
+                        <i class="fa fa-search" aria-hidden="true"/>
+                        <span>منویی پیدا نشد</span>
+                    </div>
+                </t>
+                <div t-else="" class="o_liquid_sidebar_empty" role="status">
+                    <i class="oi oi-apps" aria-hidden="true"/>
+                    <span>برای شروع یک برنامه را انتخاب کنید</span>
+                </div>
+            </nav>
+
+            <footer t-if="!ui.isSmall" class="o_liquid_sidebar_footer">
+                <button type="button"
+                        class="o_liquid_sidebar_collapse"
+                        aria-controls="o_liquid_sidebar"
+                        t-att-aria-expanded="shell.collapsed ? 'false' : 'true'"
+                        t-att-aria-label="shell.collapsed ? 'باز کردن منوی کناری' : 'جمع کردن منوی کناری'"
+                        t-att-title="shell.collapsed ? 'باز کردن منو' : 'جمع کردن منو'"
+                        t-on-click="() => this.shell.setCollapsed(!this.shell.collapsed)">
+                    <i t-att-class="shell.collapsed ? 'fa fa-angle-double-left' : 'fa fa-angle-double-right'"
+                       aria-hidden="true"/>
+                    <span class="o_liquid_sidebar_label o_lg_sidebar_label">جمع کردن منو</span>
+                </button>
+            </footer>
+        </aside>
+
+        <button t-if="ui.isSmall and shell.mobileOpen"
+                type="button"
+                class="o_liquid_sidebar_backdrop o_lg_sidebar_backdrop"
+                aria-label="بستن منوی کناری"
+                tabindex="-1"
+                t-on-click.stop="shell.closeMobile"/>
+
+        <div t-if="shell.appsOpen"
+             id="o_liquid_app_grid"
+             class="o_liquid_app_grid"
+             dir="rtl">
+            <button type="button"
+                    class="o_liquid_app_grid_backdrop"
+                    aria-label="بستن فهرست برنامه‌ها"
+                    tabindex="-1"
+                    t-on-click.stop="shell.closeApps"/>
+            <section class="o_liquid_app_grid_panel lg-glass-modal"
+                     role="dialog"
+                     aria-modal="true"
+                     aria-labelledby="o_liquid_app_grid_title"
+                     t-ref="appGrid">
+                <header class="o_liquid_app_grid_header">
+                    <div>
+                        <h2 id="o_liquid_app_grid_title">همه برنامه‌ها</h2>
+                        <p><t t-esc="apps.length"/> برنامه در دسترس شماست</p>
+                    </div>
+                    <button type="button"
+                            class="o_liquid_icon_button"
+                            aria-label="بستن فهرست برنامه‌ها"
+                            title="بستن"
+                            t-on-click.stop="shell.closeApps">
+                        <i class="fa fa-times" aria-hidden="true"/>
+                    </button>
+                </header>
+
+                <div class="o_liquid_app_grid_search lg-glass-input">
+                    <label class="o_liquid_sr_only" for="o_liquid_apps_search">جست‌وجوی برنامه‌ها</label>
+                    <i class="fa fa-search" aria-hidden="true"/>
+                    <input id="o_liquid_apps_search"
+                           type="search"
+                           inputmode="search"
+                           autocomplete="off"
+                           placeholder="نام برنامه را جست‌وجو کنید…"
+                           aria-label="جست‌وجو میان همه برنامه‌ها"
+                           t-ref="appsSearch"
+                           t-model="state.appQuery"
+                           t-on-keydown="onAppsSearchKeydown"/>
+                    <button t-if="state.appQuery"
+                            type="button"
+                            class="o_liquid_search_clear"
+                            aria-label="پاک کردن جست‌وجو"
+                            title="پاک کردن"
+                            t-on-click="() => this.state.appQuery = ''">
+                        <i class="fa fa-times" aria-hidden="true"/>
+                    </button>
+                </div>
+
+                <div class="o_liquid_app_grid_scroll">
+                    <div class="o_liquid_app_grid_items">
+                        <button t-foreach="filteredApps"
+                                t-as="app"
+                                t-key="app.id"
+                                type="button"
+                                class="o_liquid_app_card lg-glass-card"
+                                t-att-class="{
+                                    'is-current': currentApp and currentApp.id === app.id,
+                                    'is-loading': state.busyAppId === app.id,
+                                }"
+                                t-att-data-menu-xmlid="app.xmlid"
+                                t-att-title="appName(app)"
+                                t-att-aria-current="currentApp and currentApp.id === app.id and 'page'"
+                                t-att-aria-busy="state.busyAppId === app.id ? 'true' : 'false'"
+                                t-on-click="() => this.selectApp(app)">
+                            <span class="o_liquid_app_icon" aria-hidden="true">
+                                <img t-if="appIconData(app)"
+                                     class="o_liquid_app_icon_image"
+                                     t-att-src="appIconData(app)"
+                                     alt=""/>
+                                <span t-elif="appIconSpec(app)"
+                                      class="o_liquid_app_icon_glyph"
+                                      t-att-style="appIconStyle(app)">
+                                    <i t-att-class="appIconSpec(app).iconClass"/>
+                                </span>
+                                <span t-else="" class="o_liquid_app_icon_fallback" t-esc="appInitial(app)"/>
+                            </span>
+                            <span class="o_liquid_app_card_name" t-esc="appName(app)"/>
+                            <i t-if="state.busyAppId === app.id"
+                               class="fa fa-circle-o-notch fa-spin o_liquid_app_loading"
+                               aria-hidden="true"/>
+                        </button>
+                    </div>
+
+                    <div t-if="!filteredApps.length" class="o_liquid_app_grid_empty" role="status">
+                        <i class="fa fa-search" aria-hidden="true"/>
+                        <strong>برنامه‌ای پیدا نشد</strong>
+                        <span>عبارت دیگری را امتحان کنید.</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </t>
+</templates>

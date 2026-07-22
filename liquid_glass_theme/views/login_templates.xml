@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--
+        Visual-only extension of Odoo's native authentication templates.
+        The original form, action, CSRF token, fields, redirect values and
+        server-provided error/message nodes remain owned by web.login.
+    -->
+    <template id="login_layout_liquid_glass"
+              name="Liquid Glass Login Layout"
+              inherit_id="web.login_layout"
+              priority="40">
+        <xpath expr="//t[@t-call='web.frontend_layout']/t[@t-set='html_data']" position="before">
+            <t t-set="title" t-value="'حساب‌یار | ورود'"/>
+            <t t-set="pageName" t-value="'o_liquid_login_wrap'"/>
+            <t t-set="head">
+                <script type="text/javascript"
+                        src="/liquid_glass_theme/static/src/js/login.js?v=18.0.2.0.0"
+                        defer="defer"></script>
+            </t>
+        </xpath>
+
+        <xpath expr="//t[@t-set='body_classname']" position="attributes">
+            <attribute name="t-value">'bg-100 o_liquid_login_page'</attribute>
+        </xpath>
+
+        <xpath expr="//div[contains(concat(' ', normalize-space(@class), ' '), ' container ')]" position="before">
+            <div class="o_liquid_login_ambient" aria-hidden="true">
+                <span class="o_liquid_login_orb o_liquid_login_orb--one"/>
+                <span class="o_liquid_login_orb o_liquid_login_orb--two"/>
+                <span class="o_liquid_login_orb o_liquid_login_orb--three"/>
+                <span class="o_liquid_login_grain"/>
+            </div>
+        </xpath>
+
+        <xpath expr="//div[contains(concat(' ', normalize-space(@class), ' '), ' container ')]" position="attributes">
+            <attribute name="class" add="o_liquid_login_shell" separator=" "/>
+        </xpath>
+
+        <xpath expr="//div[contains(@t-attf-class, 'card')][contains(@t-attf-class, 'o_database_list')]" position="attributes">
+            <attribute name="t-attf-class" add="o_liquid_login_card" separator=" "/>
+        </xpath>
+
+        <xpath expr="//div[contains(concat(' ', normalize-space(@class), ' '), ' card-body ')]" position="attributes">
+            <attribute name="class" add="o_liquid_login_card_body" separator=" "/>
+        </xpath>
+
+        <xpath expr="//div[contains(concat(' ', normalize-space(@class), ' '), ' card-body ')]/*[1]" position="before">
+            <div class="o_liquid_login_theme_control">
+                <button type="button"
+                        class="o_liquid_login_theme_toggle"
+                        aria-label="فعال‌کردن تم روشن"
+                        aria-pressed="true"
+                        title="تغییر تم روشن و تاریک">
+                    <span class="o_liquid_login_theme_icon" aria-hidden="true">☀</span>
+                    <span class="visually-hidden o_liquid_login_theme_label">فعال‌کردن تم روشن</span>
+                </button>
+            </div>
+            <header class="o_liquid_login_identity" id="liquid-login-title">
+                <span class="o_liquid_login_eyebrow">سامانه یکپارچه مدیریت مالی</span>
+                <h1>حساب‌یار</h1>
+                <p>ورود امن به فضای کاری حسابداری</p>
+            </header>
+        </xpath>
+
+        <xpath expr="//div[contains(concat(' ', normalize-space(@class), ' '), ' card-body ')]/div[contains(concat(' ', normalize-space(@class), ' '), ' text-center ')][1]" position="attributes">
+            <attribute name="class" add="o_liquid_login_logo" separator=" "/>
+        </xpath>
+
+        <xpath expr="//div[contains(concat(' ', normalize-space(@class), ' '), ' card-body ')]/div[contains(concat(' ', normalize-space(@class), ' '), ' text-center ')][1]/img" position="attributes">
+            <attribute name="class" add="o_liquid_login_company_logo" separator=" "/>
+            <attribute name="alt">نشان شرکت</attribute>
+        </xpath>
+
+        <xpath expr="//div[contains(concat(' ', normalize-space(@class), ' '), ' card-body ')]/div[@t-if='not disable_footer']" position="attributes">
+            <attribute name="class" add="o_liquid_login_footer" separator=" "/>
+        </xpath>
+    </template>
+
+    <template id="login_form_liquid_glass"
+              name="Liquid Glass Login Form Controls"
+              inherit_id="web.login"
+              priority="40">
+        <xpath expr="//form[contains(@t-attf-class, 'oe_login_form')]" position="attributes">
+            <attribute name="t-attf-class" add="o_liquid_login_form" separator=" "/>
+            <attribute name="dir">rtl</attribute>
+            <attribute name="aria-labelledby">liquid-login-title</attribute>
+            <attribute name="data-liquid-login">true</attribute>
+        </xpath>
+
+        <xpath expr="//form[contains(@t-attf-class, 'oe_login_form')]//input[@id='password']/parent::div" position="attributes">
+            <attribute name="class" add="o_liquid_password_field" separator=" "/>
+        </xpath>
+
+        <xpath expr="//form[contains(@t-attf-class, 'oe_login_form')]//input[@id='password']" position="after">
+            <button type="button"
+                    class="o_liquid_password_toggle"
+                    aria-controls="password"
+                    aria-label="نمایش رمز عبور"
+                    aria-pressed="false">
+                <i class="fa fa-eye o_liquid_password_icon" aria-hidden="true"/>
+                <span class="o_liquid_password_toggle_label">نمایش</span>
+            </button>
+        </xpath>
+
+        <xpath expr="//form[contains(@t-attf-class, 'oe_login_form')]//div[contains(concat(' ', normalize-space(@class), ' '), ' oe_login_buttons ')]/button[@type='submit'][not(@name)]" position="attributes">
+            <attribute name="class" add="o_liquid_login_submit" separator=" "/>
+            <attribute name="data-loading-label">در حال ورود…</attribute>
+        </xpath>
+
+        <xpath expr="//form[contains(@t-attf-class, 'oe_login_form')]//div[contains(concat(' ', normalize-space(@class), ' '), ' oe_login_buttons ')]/button[@type='submit'][not(@name)]" position="after">
+            <span class="visually-hidden o_liquid_login_status"
+                  role="status"
+                  aria-live="polite"
+                  aria-atomic="true"/>
+        </xpath>
+    </template>
+</odoo>

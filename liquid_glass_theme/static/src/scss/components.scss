@@ -1,0 +1,119 @@
+/* Shared controls, menus, semantic states, notifications, tooltip and popover. */
+
+.o_web_client .btn {
+    border-radius: var(--lg-radius-sm);
+    font-weight: 600;
+    transition: transform var(--lg-duration-fast), filter var(--lg-duration-fast), background-color var(--lg-duration-fast), border-color var(--lg-duration-fast), color var(--lg-duration-fast), box-shadow var(--lg-duration-fast);
+}
+
+.o_web_client .btn-primary {
+    border: 1px solid rgba(255, 255, 255, .22) !important;
+    background: linear-gradient(135deg, #1d4ed8, #4338ca) !important;
+    color: #fff !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), 0 6px 18px rgba(29, 78, 216, .28);
+}
+.o_web_client .btn-primary:hover { filter: brightness(1.08); }
+
+.o_web_client :where(.btn-secondary, .btn-light, .btn-outline-secondary) {
+    border: 1px solid var(--lg-border) !important;
+    background: var(--lg-surface) !important;
+    color: var(--lg-text-primary) !important;
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-sm);
+}
+.o_web_client :where(.btn-secondary, .btn-light, .btn-outline-secondary):hover { border-color: var(--lg-primary-border) !important; background: var(--lg-primary-soft) !important; color: var(--lg-primary) !important; }
+
+.o_web_client .btn-danger { border-color: color-mix(in srgb, var(--lg-danger) 56%, transparent) !important; background: var(--lg-danger) !important; color: #fff !important; }
+.o_web_client .btn-success { border-color: color-mix(in srgb, var(--lg-success) 56%, transparent) !important; background: var(--lg-success) !important; color: #fff !important; }
+.o_web_client .btn-link { color: var(--lg-primary); }
+
+@media (hover: hover) {
+    .o_web_client .btn-primary:hover { transform: translateY(-1px); }
+}
+
+.o_web_client :where(.dropdown-menu, .o-dropdown--menu, .o_popover, .popover, .o_command_palette) {
+    border: 1px solid var(--lg-border) !important;
+    border-radius: var(--lg-radius-md) !important;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .07), transparent 38%),
+        var(--lg-surface-solid) !important;
+    color: var(--lg-text-primary);
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-lg) !important;
+    -webkit-backdrop-filter: blur(var(--lg-blur-md)) saturate(135%);
+    backdrop-filter: blur(var(--lg-blur-md)) saturate(135%);
+}
+
+.o_web_client :where(.dropdown-menu, .o-dropdown--menu) :where(.dropdown-item, .dropdown-item-text, .dropdown-header) { color: var(--lg-text-secondary) !important; }
+.o_web_client :where(.dropdown-menu, .o-dropdown--menu) .dropdown-item { border-radius: .55rem; }
+.o_web_client :where(.dropdown-menu, .o-dropdown--menu) .dropdown-item:hover,
+.o_web_client :where(.dropdown-menu, .o-dropdown--menu) .dropdown-item:focus,
+.o_web_client :where(.dropdown-menu, .o-dropdown--menu) .dropdown-item.active { background: var(--lg-primary-soft) !important; color: var(--lg-primary) !important; }
+.o_web_client :where(.dropdown-divider, .dropdown-header) { border-color: var(--lg-border-soft) !important; }
+
+.o_web_client :where(.tooltip-inner, .o_tooltip, .o_graph_custom_tooltip, .o_tooltip_legend) {
+    border: 1px solid var(--lg-border);
+    border-radius: var(--lg-radius-sm);
+    background: var(--lg-surface-solid) !important;
+    color: var(--lg-text-primary) !important;
+    box-shadow: var(--lg-shadow-md);
+}
+
+.o_notification_manager { z-index: var(--lg-z-toast); }
+.o_notification_manager .o_notification {
+    border: 1px solid var(--lg-border) !important;
+    border-radius: var(--lg-radius-md) !important;
+    background: var(--lg-surface-solid) !important;
+    color: var(--lg-text-primary);
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-lg) !important;
+}
+.o_notification_manager .o_notification_bar.bg-success { background: var(--lg-success) !important; }
+.o_notification_manager .o_notification_bar.bg-danger { background: var(--lg-danger) !important; }
+.o_notification_manager .o_notification_bar.bg-warning { background: var(--lg-warning) !important; }
+.o_notification_manager .o_notification_bar.bg-info { background: var(--lg-info) !important; }
+
+.o_web_client .alert { border-radius: var(--lg-radius-sm); border-width: 1px; }
+.o_web_client .alert-success { border-color: color-mix(in srgb, var(--lg-success) 38%, transparent); background: var(--lg-success-soft); color: var(--lg-success); }
+.o_web_client .alert-danger { border-color: color-mix(in srgb, var(--lg-danger) 38%, transparent); background: var(--lg-danger-soft); color: var(--lg-danger); }
+.o_web_client .alert-warning { border-color: color-mix(in srgb, var(--lg-warning) 38%, transparent); background: var(--lg-warning-soft); color: var(--lg-warning); }
+.o_web_client .alert-info { border-color: color-mix(in srgb, var(--lg-info) 38%, transparent); background: var(--lg-info-soft); color: var(--lg-info); }
+
+.o_web_client :where(.badge, .o_tag) { border-radius: var(--lg-radius-pill); font-weight: 600; }
+.o_web_client .text-success { color: var(--lg-success) !important; }
+.o_web_client .text-danger { color: var(--lg-danger) !important; }
+.o_web_client .text-warning { color: var(--lg-warning) !important; }
+.o_web_client .text-info { color: var(--lg-info) !important; }
+.o_web_client .text-bg-success { background: var(--lg-success-soft) !important; color: var(--lg-success) !important; }
+.o_web_client .text-bg-danger { background: var(--lg-danger-soft) !important; color: var(--lg-danger) !important; }
+.o_web_client .text-bg-warning { background: var(--lg-warning-soft) !important; color: var(--lg-warning) !important; }
+.o_web_client .text-bg-info { background: var(--lg-info-soft) !important; color: var(--lg-info) !important; }
+
+.o_web_client :where(.form-check-input, .o-checkbox input) {
+    border-color: var(--lg-border-strong);
+    background-color: var(--lg-surface-solid);
+}
+.o_web_client :where(.form-check-input, .o-checkbox input):checked { border-color: var(--lg-primary); background-color: var(--lg-primary); }
+
+.o_web_client :where(.nav-tabs, .nav-pills) {
+    border-color: var(--lg-border-soft);
+    background: transparent !important;
+    box-shadow: none;
+}
+.o_web_client :where(.nav-tabs, .nav-pills) .nav-link { border-radius: var(--lg-radius-sm); color: var(--lg-text-muted); }
+.o_web_client :where(.nav-tabs, .nav-pills) .nav-link:hover { border-color: var(--lg-border); background: var(--lg-surface-soft); color: var(--lg-text-primary); }
+.o_web_client :where(.nav-tabs, .nav-pills) .nav-link.active { border-color: var(--lg-primary-border); background: var(--lg-primary-soft); color: var(--lg-primary); }
+
+.o_web_client :where(.o-autocomplete--dropdown-menu, .ui-autocomplete, .o_datetime_picker) {
+    border: 1px solid var(--lg-border) !important;
+    border-radius: var(--lg-radius-md) !important;
+    background: var(--lg-surface-solid) !important;
+    color: var(--lg-text-primary);
+    box-shadow: var(--lg-shadow-lg);
+}
+
+@supports not (background: color-mix(in srgb, white, black)) {
+    .o_web_client .btn-danger { border-color: var(--lg-danger) !important; }
+    .o_web_client .btn-success { border-color: var(--lg-success) !important; }
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    .o_web_client :where(.dropdown-menu, .o-dropdown--menu, .o_popover, .popover, .o_command_palette) { background: var(--lg-surface-fallback) !important; }
+}

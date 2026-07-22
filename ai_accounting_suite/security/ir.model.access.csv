@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ai_document_capture_user,ai.document.capture user,model_ai_document_capture,base.group_user,1,1,1,1
+access_ai_document_capture_line_user,ai.document.capture.line user,model_ai_document_capture_line,base.group_user,1,1,1,1
+access_ai_audit_alert_user,ai.audit.alert user,model_ai_audit_alert,base.group_user,1,1,1,1
+access_ai_finance_advisor_user,ai.finance.advisor user,model_ai_finance_advisor,base.group_user,1,1,1,1
+access_ai_insurance_export_wizard_user,ai.insurance.export.wizard user,model_ai_insurance_export_wizard,base.group_user,1,1,1,1

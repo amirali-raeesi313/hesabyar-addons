@@ -1,0 +1,78 @@
+/* Accounting journal dashboard: real Odoo 18 classes, no fabricated metrics. */
+
+.o_account_dashboard_kanban_view,
+.o_account_kanban { background: transparent !important; }
+
+.o_account_kanban .o_kanban_renderer { padding: var(--lg-space-4); gap: var(--lg-space-4); }
+
+.o_account_kanban .o_kanban_record:not(.o_kanban_ghost) {
+    min-block-size: 10rem;
+    overflow: hidden;
+    border-radius: var(--lg-radius-xl) !important;
+    background:
+        radial-gradient(circle at 8% 0%, var(--lg-primary-soft), transparent 34%),
+        linear-gradient(155deg, rgba(255, 255, 255, .085), transparent 42%),
+        var(--lg-surface-strong) !important;
+}
+
+.o_account_kanban .o_kanban_record > :where(a, span):first-child,
+.o_account_kanban .o_kanban_record .fs-4 { color: var(--lg-text-primary); font-weight: 700; }
+
+.o_account_kanban .o_kanban_record :where(.col-auto.text-end, [dir="ltr"]) {
+    direction: ltr;
+    unicode-bidi: isolate;
+    font-variant-numeric: tabular-nums lining-nums;
+    font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+.o_account_kanban .o_dashboard_graph {
+    margin-block: var(--lg-space-4) calc(var(--lg-space-3) * -1);
+    padding: var(--lg-space-2);
+    border-block-start: 1px solid var(--lg-border-soft);
+    border-radius: 0 0 var(--lg-radius-lg) var(--lg-radius-lg);
+    background: color-mix(in srgb, var(--lg-surface-solid) 88%, transparent);
+}
+.o_account_kanban .o_dashboard_graph canvas { min-block-size: 9rem; filter: saturate(.92); }
+
+.o_account_kanban .o_kanban_card_manage_pane,
+.o_account_kanban .o_kanban_card_manage_section {
+    border-color: var(--lg-border-soft);
+    background: var(--lg-surface-solid) !important;
+    color: var(--lg-text-primary);
+}
+.o_account_kanban .o_kanban_card_manage_title { color: var(--lg-text-muted); font-size: .75rem; letter-spacing: .02em; }
+.o_account_kanban .o_kanban_card_manage_pane a { color: var(--lg-primary); }
+
+.o_account_dashboard_kanban_view .o_drop_area,
+.o_account_kanban .o_drop_area {
+    border: 2px dashed var(--lg-primary-border) !important;
+    border-radius: var(--lg-radius-lg);
+    background: var(--lg-primary-soft) !important;
+    color: var(--lg-primary);
+}
+.o_account_dashboard_kanban_view .o_drop_area.drag_to_card { border-color: var(--lg-primary) !important; box-shadow: var(--lg-focus-ring); }
+
+.o_account_kanban .o_dashboard_star { color: var(--lg-text-muted); }
+.o_account_kanban .o_dashboard_star.fa-star,
+.o_account_kanban .o_dashboard_star:hover { color: var(--lg-warning); }
+
+.o_account_kanban :where(.o_kanban_primary_left, [name="kanban_primary_right"]) .btn { min-block-size: var(--lg-control-height); }
+
+/* Common accounting report shells, when account_reports is installed. */
+:where(.o_account_reports_page, .o_account_report, .o_account_reports_body) {
+    background: transparent !important;
+    color: var(--lg-text-primary);
+}
+
+:where(.o_account_reports_table, .o_account_report) table {
+    border: 1px solid var(--lg-border);
+    border-radius: var(--lg-radius-md);
+    background: var(--lg-surface-solid);
+    color: var(--lg-text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+@supports not (background: color-mix(in srgb, white, black)) {
+    .o_account_kanban .o_dashboard_graph { background: var(--lg-surface-solid); }
+}
+

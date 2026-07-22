@@ -1,0 +1,122 @@
+/* Chatter and Discuss: restrained surfaces to keep long timelines readable. */
+
+.o-mail-Chatter {
+    border-inline-start: 1px solid var(--lg-border-soft);
+    background: transparent !important;
+    color: var(--lg-text-primary);
+}
+
+.o-mail-Chatter-top {
+    background: transparent !important;
+    color: var(--lg-text-primary);
+}
+
+.o-mail-Chatter-topbar {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 3;
+    border-block-end: 1px solid var(--lg-border-soft);
+    background: var(--lg-surface-strong) !important;
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-sm);
+    -webkit-backdrop-filter: blur(var(--lg-blur-sm)) saturate(125%);
+    backdrop-filter: blur(var(--lg-blur-sm)) saturate(125%);
+}
+
+.o-mail-Chatter-topbar :where(.btn, button) { min-block-size: var(--lg-control-height); border-radius: var(--lg-radius-sm); }
+
+.o-mail-Composer {
+    margin: var(--lg-space-3);
+    border: 1px solid var(--lg-border);
+    border-radius: var(--lg-radius-lg);
+    background: var(--lg-surface) !important;
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-sm);
+}
+
+.o-mail-Composer .o-mail-Composer-inputStyle,
+.o-mail-Composer .o-mail-Composer-input {
+    border-radius: var(--lg-radius-md) !important;
+    background: var(--lg-surface-solid) !important;
+    color: var(--lg-text-primary) !important;
+}
+.o-mail-Composer:focus-within { border-color: var(--lg-primary-border); box-shadow: var(--lg-focus-ring), var(--lg-inner-light); }
+
+.o-mail-Thread { background: transparent !important; color: var(--lg-text-primary); }
+.o-mail-Message {
+    margin-inline: var(--lg-space-2);
+    border-block-end: 1px solid var(--lg-border-soft);
+    color: var(--lg-text-primary);
+}
+.o-mail-Message:hover { border-radius: var(--lg-radius-md); background: var(--lg-surface-soft); }
+.o-mail-Message-content,
+.o-mail-Message-body { color: var(--lg-text-primary); }
+.o-mail-Message :where(.text-muted, .o-mail-Message-date) { color: var(--lg-text-muted) !important; }
+
+.o-mail-Message .o-mail-Message-avatar,
+.o-mail-Activity-avatar,
+.o-mail-Follower-avatar { border: 1px solid var(--lg-border); box-shadow: var(--lg-shadow-sm); }
+
+.o-mail-AttachmentCard {
+    border: 1px solid var(--lg-border-soft);
+    border-radius: var(--lg-radius-sm) !important;
+    background: var(--lg-surface-soft) !important;
+    color: var(--lg-text-primary);
+}
+.o-mail-AttachmentCard:hover { border-color: var(--lg-primary-border); background: var(--lg-primary-soft) !important; }
+
+.o-mail-Activity {
+    border: 1px solid var(--lg-border-soft);
+    border-radius: var(--lg-radius-md);
+    background: var(--lg-surface-soft);
+    color: var(--lg-text-primary);
+}
+
+.o-mail-Followers-dropdown,
+.o-mail-ActivityMenu,
+.o-mail-MessagingMenu { color: var(--lg-text-primary); }
+
+.o-mail-Discuss { background: transparent !important; color: var(--lg-text-primary); }
+.o-mail-Discuss :where(
+    .o-mail-Discuss-content,
+    .o-mail-Discuss-main,
+    .o-mail-Discuss-threadContainer,
+    .o-mail-Discuss-core
+) {
+    color: var(--lg-text-primary);
+}
+.o-mail-Discuss .o-mail-Discuss-core {
+    border: 1px solid var(--lg-border-soft);
+    background: var(--lg-surface-solid) !important;
+}
+.o-mail-DiscussSidebar {
+    border-inline-end: 1px solid var(--lg-border-soft);
+    background: var(--lg-surface-strong) !important;
+    color: var(--lg-text-primary);
+}
+.o-mail-DiscussSidebar-item:hover,
+.o-mail-DiscussSidebarChannel.o-active { border-radius: var(--lg-radius-sm); background: var(--lg-primary-soft) !important; color: var(--lg-primary); }
+.o-mail-Discuss-header { border-block-end: 1px solid var(--lg-border-soft); background: var(--lg-surface-soft); }
+
+.o-mail-MessagingMenu-navbar {
+    border-color: var(--lg-border-soft) !important;
+    background: var(--lg-surface-solid) !important;
+    color: var(--lg-text-primary) !important;
+    box-shadow: 0 -8px 28px rgba(0, 0, 0, .14) !important;
+}
+.o-mail-MessagingMenu-navbar :where(.btn, button) {
+    border-color: var(--lg-border-soft) !important;
+    background: transparent !important;
+    color: var(--lg-text-secondary) !important;
+}
+.o-mail-MessagingMenu-navbar :where(.btn, button):hover,
+.o-mail-MessagingMenu-navbar :where(.btn, button).active {
+    background: var(--lg-primary-soft) !important;
+    color: var(--lg-primary) !important;
+}
+
+.o-mail-Thread-empty,
+.o-mail-Discuss .text-muted { color: var(--lg-text-muted) !important; }
+
+/* Messages and attachments deliberately receive no backdrop-filter. */
+.o-mail-Message,
+.o-mail-AttachmentCard,
+.o-mail-Activity { -webkit-backdrop-filter: none; backdrop-filter: none; }

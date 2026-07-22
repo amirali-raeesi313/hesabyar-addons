@@ -1,0 +1,88 @@
+/* Dialogs, wizards, import/export and nested record selectors. */
+
+.modal-backdrop,
+.o_dialog_container .modal-backdrop {
+    z-index: var(--lg-z-overlay);
+    background: var(--lg-backdrop) !important;
+    opacity: 1 !important;
+    -webkit-backdrop-filter: blur(6px) saturate(115%);
+    backdrop-filter: blur(6px) saturate(115%);
+}
+
+.o_dialog_container .modal,
+.o_dialog { z-index: var(--lg-z-modal); }
+
+.o_dialog .modal-content,
+.o_dialog_container .modal-content,
+.modal.o_technical_modal .modal-content {
+    overflow: hidden;
+    border: 1px solid var(--lg-border) !important;
+    border-radius: var(--lg-radius-xl) !important;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .09), transparent 34%),
+        var(--lg-surface-strong) !important;
+    color: var(--lg-text-primary);
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-lg) !important;
+    -webkit-backdrop-filter: blur(var(--lg-blur-lg)) saturate(var(--lg-saturation));
+    backdrop-filter: blur(var(--lg-blur-lg)) saturate(var(--lg-saturation));
+}
+
+.o_dialog :where(.modal-header, .modal-footer),
+.o_dialog_container :where(.modal-header, .modal-footer) {
+    flex: 0 0 auto;
+    border-color: var(--lg-border-soft) !important;
+    background: transparent !important;
+}
+
+.o_dialog :where(.modal-title, .modal-body, .modal-footer, label),
+.o_dialog_container :where(.modal-title, .modal-body, .modal-footer, label) { color: var(--lg-text-primary); }
+.o_dialog .modal-body,
+.o_dialog_container .modal-body { min-block-size: 0; overflow: auto; scrollbar-gutter: stable; }
+
+.o_dialog .btn-close,
+.o_dialog_container .btn-close { border-radius: var(--lg-radius-xs); color: var(--lg-text-primary); filter: none; opacity: .78; }
+
+.o_dialog .o_form_view .o_form_sheet,
+.o_dialog_container .o_form_view .o_form_sheet {
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+
+:where(.o_select_create_dialog, .o_import_view, .o_export_data_dialog, .o_attachment_preview) {
+    color: var(--lg-text-primary);
+}
+
+:where(.o_select_create_dialog, .o_import_view, .o_export_data_dialog) :where(.card, .list-group-item) {
+    border-color: var(--lg-border-soft);
+    background: var(--lg-surface-soft);
+    color: var(--lg-text-primary);
+}
+
+.o_import_view .o_import_drop_zone,
+.o_file_input .o_file_input_trigger {
+    border: 2px dashed var(--lg-primary-border) !important;
+    border-radius: var(--lg-radius-lg);
+    background: var(--lg-primary-soft) !important;
+    color: var(--lg-primary);
+}
+
+.o_dialog .o_list_renderer { max-block-size: unquote("min(58vh, 38rem)"); }
+
+@media (prefers-reduced-motion: no-preference) {
+    .modal.show .modal-dialog { animation: lg-dialog-enter var(--lg-duration-slow) var(--lg-ease-enter); }
+}
+
+@keyframes lg-dialog-enter {
+    from { opacity: 0; transform: translateY(12px) scale(.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    .o_dialog .modal-content,
+    .o_dialog_container .modal-content,
+    .modal.o_technical_modal .modal-content { background: var(--lg-surface-fallback) !important; }
+}

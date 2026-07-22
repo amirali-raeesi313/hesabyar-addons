@@ -1,0 +1,110 @@
+/* Main web-client surfaces. No accounting data surface is made transparent here. */
+
+.o_web_client :where(.o_action_manager, .o_view_controller, .o_content, .o_renderer) {
+    background-color: transparent;
+}
+
+.o_action_manager {
+    min-inline-size: 0;
+    transition:
+        margin-left var(--lg-duration-slow) var(--lg-ease-standard),
+        margin-right var(--lg-duration-slow) var(--lg-ease-standard);
+}
+
+.o_view_controller {
+    min-block-size: 0;
+    color: var(--lg-text-primary);
+}
+
+.o_view_controller > .o_content {
+    min-block-size: 0;
+    scrollbar-gutter: stable;
+}
+
+.o_component_with_search_panel > .o_content > .o_search_panel,
+.o_search_panel {
+    border-inline-end: 1px solid var(--lg-border-soft);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .055), transparent 36%),
+        var(--lg-surface-strong) !important;
+    color: var(--lg-text-primary);
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-sm);
+    -webkit-backdrop-filter: blur(var(--lg-blur-md)) saturate(135%);
+    backdrop-filter: blur(var(--lg-blur-md)) saturate(135%);
+}
+
+.o_search_panel .o_search_panel_section_header,
+.o_search_panel .o_search_panel_label_title { color: var(--lg-text-secondary); }
+.o_search_panel .o_search_panel_category_value:hover,
+.o_search_panel .o_search_panel_filter_value:hover,
+.o_search_panel .active { background: var(--lg-primary-soft); border-radius: var(--lg-radius-xs); }
+
+.o_settings_container,
+.o_setting_container {
+    color: var(--lg-text-primary);
+    background: transparent !important;
+}
+
+.o_base_settings_view .o_setting_container > .settings {
+    border-inline-start: 1px solid var(--lg-border-soft);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .045), transparent 22%),
+        var(--lg-surface-strong) !important;
+    color: var(--lg-text-primary);
+    -webkit-backdrop-filter: blur(var(--lg-blur-sm)) saturate(125%);
+    backdrop-filter: blur(var(--lg-blur-sm)) saturate(125%);
+}
+
+.o_base_settings_view .settings .o_setting_box {
+    border: 1px solid var(--lg-border-soft);
+    border-radius: var(--lg-radius-md);
+    background: var(--lg-surface-soft);
+    box-shadow: var(--lg-inner-light);
+}
+
+.o_settings_container .settings_tab,
+.o_base_settings_view .o_setting_container .settings_tab {
+    border-inline-end: 1px solid var(--lg-border-soft);
+    background: var(--lg-surface-strong) !important;
+    -webkit-backdrop-filter: blur(var(--lg-blur-md)) saturate(135%);
+    backdrop-filter: blur(var(--lg-blur-md)) saturate(135%);
+}
+
+.o_base_settings_view .settings_tab .tab {
+    border-radius: var(--lg-radius-sm);
+    color: var(--lg-text-secondary) !important;
+}
+
+.o_settings_container .settings_tab .tab:hover,
+.o_settings_container .settings_tab .tab.selected,
+.o_base_settings_view .settings_tab .tab.selected {
+    border-radius: var(--lg-radius-sm);
+    background: var(--lg-primary-soft) !important;
+    color: var(--lg-primary) !important;
+}
+
+.o_view_nocontent {
+    margin-block: clamp(2rem, 10vh, 7rem);
+    color: var(--lg-text-muted);
+}
+
+.o_view_nocontent > :where(p, .o_view_nocontent_empty_folder, .o_view_nocontent_smiling_face) {
+    border: 1px solid var(--lg-border-soft);
+    border-radius: var(--lg-radius-lg);
+    background: var(--lg-surface-soft);
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-sm);
+}
+
+.o_loading_indicator,
+.o_blockUI .o_spinner {
+    color: var(--lg-primary);
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    .o_search_panel,
+    .o_settings_container .settings_tab,
+    .o_base_settings_view .o_setting_container .settings_tab,
+    .o_base_settings_view .o_setting_container > .settings {
+        background: var(--lg-surface-fallback) !important;
+    }
+}

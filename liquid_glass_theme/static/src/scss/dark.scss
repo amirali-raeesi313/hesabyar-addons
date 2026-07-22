@@ -1,0 +1,62 @@
+/* Dark Liquid Glass colour system. The existing theme boot applies liquid-dark. */
+
+html.liquid-dark,
+html[data-lg-theme="dark"] {
+    color-scheme: dark;
+    --lg-bg-color: #07101f;
+    --lg-bg-image: url("/liquid_glass_theme/static/img/liquid-night.webp");
+    --lg-bg-tint: linear-gradient(155deg, rgba(5, 12, 25, .88), rgba(8, 17, 34, .91) 58%, rgba(5, 10, 22, .94));
+    --lg-bg-glow: radial-gradient(circle at 14% 12%, rgba(46, 138, 255, .16), transparent 34%), radial-gradient(circle at 84% 88%, rgba(114, 83, 255, .10), transparent 34%);
+
+    --lg-surface-soft: rgba(255, 255, 255, .052);
+    --lg-surface: rgba(20, 34, 57, .58);
+    --lg-surface-strong: rgba(12, 24, 44, .79);
+    --lg-surface-solid: rgba(10, 20, 37, .955);
+    --lg-surface-fallback: #111f36;
+    --lg-surface-raised: #152641;
+
+    --lg-border-soft: rgba(255, 255, 255, .075);
+    --lg-border: rgba(255, 255, 255, .135);
+    --lg-border-strong: rgba(255, 255, 255, .22);
+    --lg-border-highlight: rgba(255, 255, 255, .32);
+
+    --lg-text-primary: #f3f6fd;
+    --lg-text-secondary: #c1cbe0;
+    --lg-text-muted: #98a6c2;
+    --lg-text-disabled: #71809e;
+
+    --lg-primary: #78adff;
+    --lg-primary-hover: #9ac2ff;
+    --lg-primary-soft: rgba(93, 157, 255, .17);
+    --lg-primary-border: rgba(120, 173, 255, .38);
+    --lg-success: #4adea5;
+    --lg-success-soft: rgba(74, 222, 165, .14);
+    --lg-danger: #ff8795;
+    --lg-danger-soft: rgba(255, 135, 149, .14);
+    --lg-warning: #ffd166;
+    --lg-warning-soft: rgba(255, 209, 102, .14);
+    --lg-info: #72d8ea;
+    --lg-info-soft: rgba(114, 216, 234, .14);
+
+    --lg-table-head: #162842;
+    --lg-table-zebra: rgba(255, 255, 255, .018);
+    --lg-table-hover: rgba(93, 157, 255, .085);
+    --lg-table-selected: rgba(93, 157, 255, .15);
+
+    --lg-backdrop: rgba(1, 6, 15, .60);
+    --lg-shadow-sm: 0 5px 18px rgba(0, 4, 14, .26);
+    --lg-shadow-md: 0 16px 44px rgba(0, 4, 14, .40);
+    --lg-shadow-lg: 0 30px 84px rgba(0, 3, 12, .58);
+    --lg-inner-light: inset 0 1px 0 rgba(255, 255, 255, .15);
+    --lg-focus-ring: 0 0 0 3px rgba(120, 173, 255, .34);
+}
+
+html.liquid-dark .o_web_client,
+html[data-lg-theme="dark"] .o_web_client {
+    --bs-body-color: var(--lg-text-primary);
+    --bs-body-bg: transparent;
+    --bs-border-color: var(--lg-border);
+    --bs-link-color: var(--lg-primary);
+    --bs-secondary-color: var(--lg-text-secondary);
+    --bs-tertiary-bg: var(--lg-surface-soft);
+}

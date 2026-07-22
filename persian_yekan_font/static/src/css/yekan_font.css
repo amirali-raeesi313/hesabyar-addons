@@ -1,0 +1,30 @@
+@font-face {
+    font-family: "Yekan";
+    src: url("/persian_yekan_font/static/fonts/Yekan.woff2") format("woff2"),
+         url("/persian_yekan_font/static/fonts/Yekan.woff") format("woff"),
+         url("/persian_yekan_font/static/fonts/Yekan.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --o-font-family: "Yekan", "Segoe UI", Tahoma, Arial, sans-serif;
+}
+
+body,
+.o_web_client,
+.o_main_navbar,
+.o_control_panel,
+.o_form_view,
+.o_list_view,
+.o_kanban_view,
+.o_calendar_container,
+.modal-content,
+.dropdown-menu,
+input,
+textarea,
+select,
+button {
+    font-family: "Yekan", "Segoe UI", Tahoma, Arial, sans-serif !important;
+}

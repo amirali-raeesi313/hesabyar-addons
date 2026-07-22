@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- ===================== ثبت‌کننده هوشمند اسناد ===================== -->
+    <record id="view_ai_capture_list" model="ir.ui.view">
+        <field name="name">ai.document.capture.list</field>
+        <field name="model">ai.document.capture</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'done'" decoration-info="state == 'analyzed'">
+                <field name="name"/>
+                <field name="move_type"/>
+                <field name="partner_name"/>
+                <field name="invoice_date_jalali"/>
+                <field name="amount_total" sum="جمع"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'done'"
+                       decoration-info="state == 'analyzed'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ai_capture_form" model="ir.ui.view">
+        <field name="name">ai.document.capture.form</field>
+        <field name="model">ai.document.capture</field>
+        <field name="arch" type="xml">
+            <form string="ثبت‌کننده هوشمند اسناد">
+                <header>
+                    <button name="action_analyze" type="object" string="🤖 تحلیل با هوش مصنوعی"
+                            class="btn-primary" invisible="state == 'done'"/>
+                    <button name="action_create_move" type="object" string="ایجاد سند پیش‌نویس"
+                            class="btn-primary" invisible="state != 'analyzed'"/>
+                    <button name="action_view_move" type="object" string="مشاهده سند"
+                            invisible="not move_id"/>
+                    <button name="action_reset" type="object" string="بازنشانی"
+                            invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,analyzed,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="سند">
+                            <field name="move_type" readonly="state != 'draft'"/>
+                            <field name="partner_name"/>
+                            <field name="partner_id"/>
+                            <field name="move_id" readonly="1" invisible="not move_id"/>
+                        </group>
+                        <group string="مبالغ استخراج‌شده">
+                            <field name="invoice_date"/>
+                            <field name="invoice_date_jalali"/>
+                            <field name="amount_untaxed"/>
+                            <field name="tax_amount"/>
+                            <field name="amount_total"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="📄 متن سند">
+                            <group>
+                                <field name="pdf_file" filename="pdf_filename"/>
+                                <field name="pdf_filename" invisible="1"/>
+                            </group>
+                            <field name="raw_text" placeholder="متن فاکتور، رسید یا ایمیل را اینجا بچسبانید..."
+                                   widget="text" options="{'resizable': true}"/>
+                        </page>
+                        <page string="📋 اقلام و حساب‌های پیشنهادی">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="description"/>
+                                    <field name="quantity"/>
+                                    <field name="price_unit"/>
+                                    <field name="subtotal"/>
+                                    <field name="account_id"/>
+                                    <field name="ai_reason" optional="show"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="🤖 توضیح هوش مصنوعی" invisible="not ai_note">
+                            <field name="ai_note" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ai_capture" model="ir.actions.act_window">
+        <field name="name">ثبت‌کننده هوشمند اسناد</field>
+        <field name="res_model">ai.document.capture</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">اولین سند هوشمند را ثبت کنید</p>
+            <p>متن فاکتور را بچسبانید، هوش مصنوعی اطلاعات و حساب معین را استخراج می‌کند و سند پیش‌نویس می‌سازد.</p>
+        </field>
+    </record>
+
+    <!-- ===================== بازرس هوشمند ===================== -->
+    <record id="view_ai_alert_list" model="ir.ui.view">
+        <field name="name">ai.audit.alert.list</field>
+        <field name="model">ai.audit.alert</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="severity == 'critical'" decoration-warning="severity == 'warning'">
+                <field name="detected_on"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="amount"/>
+                <field name="severity" widget="badge"
+                       decoration-danger="severity == 'critical'"
+                       decoration-warning="severity == 'warning'"/>
+                <field name="state" widget="badge" decoration-success="state == 'reviewed'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ai_alert_form" model="ir.ui.view">
+        <field name="name">ai.audit.alert.form</field>
+        <field name="model">ai.audit.alert</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_review" type="object" string="بررسی شد"
+                            class="btn-primary" invisible="state == 'reviewed'"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h2><field name="name"/></h2></div>
+                    <group>
+                        <group string="مشخصات">
+                            <field name="exception_type"/>
+                            <field name="severity"/>
+                            <field name="detected_on"/>
+                            <field name="state"/>
+                        </group>
+                        <group string="رسیدگی">
+                            <field name="move_id"/>
+                            <field name="partner_id"/>
+                            <field name="amount"/>
+                            <field name="user_id"/>
+                            <field name="deadline"/>
+                        </group>
+                    </group>
+                    <group string="شرح / علت"><field name="reason" nolabel="1"/></group>
+                    <group string="پیشنهاد سیستم"><field name="suggestion" nolabel="1"/></group>
+                    <group string="اقدام و نتیجه نهایی"><field name="resolution" nolabel="1"
+                           placeholder="چه اقدامی انجام شد و نتیجه چه بود؟"/></group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ai_alerts" model="ir.actions.act_window">
+        <field name="name">هشدارهای بازرس هوشمند</field>
+        <field name="res_model">ai.audit.alert</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ===================== مشاور مالی ===================== -->
+    <record id="view_ai_advisor_form" model="ir.ui.view">
+        <field name="name">ai.finance.advisor.form</field>
+        <field name="model">ai.finance.advisor</field>
+        <field name="arch" type="xml">
+            <form string="مشاور مالی هوشمند">
+                <sheet>
+                    <h2>💼 وضعیت مالی لحظه‌ای</h2>
+                    <field name="summary_html" readonly="1" nolabel="1"/>
+                    <separator string="از مشاور بپرسید"/>
+                    <field name="question" nolabel="1"
+                           placeholder="مثال: اگر فروش ما ۲۰٪ کاهش یابد، سود خالص چقدر می‌شود؟"/>
+                    <field name="answer" readonly="1" nolabel="1" invisible="not answer"/>
+                </sheet>
+                <footer>
+                    <button name="action_ask" type="object" string="🤖 پرسش از مشاور" class="btn-primary"/>
+                    <button string="بستن" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ai_advisor" model="ir.actions.act_window">
+        <field name="name">مشاور مالی هوشمند</field>
+        <field name="res_model">ai.finance.advisor</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- ===================== لیست بیمه ===================== -->
+    <record id="view_ai_insurance_wizard_form" model="ir.ui.view">
+        <field name="name">ai.insurance.export.wizard.form</field>
+        <field name="model">ai.insurance.export.wizard</field>
+        <field name="arch" type="xml">
+            <form string="خروجی لیست بیمه">
+                <group>
+                    <field name="jyear"/>
+                    <field name="jmonth"/>
+                </group>
+                <footer>
+                    <button name="action_export" type="object" string="دانلود اکسل لیست بیمه" class="btn-primary"/>
+                    <button string="بستن" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ai_insurance" model="ir.actions.act_window">
+        <field name="name">لیست بیمه ماهانه</field>
+        <field name="res_model">ai.insurance.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- ===================== اتوپایلوت ===================== -->
+    <record id="action_autopilot_dashboard" model="ir.actions.client">
+        <field name="name">اتوپایلوت</field>
+        <field name="tag">ai_autopilot_dashboard</field>
+    </record>
+
+    <record id="action_purchase_to_approve" model="ir.actions.act_window">
+        <field name="name">تأییدهای خرید</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state','=','to approve')]</field>
+    </record>
+
+    <record id="action_automation_rules" model="ir.actions.act_window">
+        <field name="name">قوانین اتوماسیون (WHEN/IF/THEN)</field>
+        <field name="res_model">base.automation</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_autopilot_root" name="اتوپایلوت" sequence="1"
+              action="action_autopilot_dashboard"/>
+    <menuitem id="menu_autopilot_dash" parent="menu_autopilot_root"
+              action="action_autopilot_dashboard" name="داشبورد" sequence="1"/>
+    <menuitem id="menu_autopilot_exceptions" parent="menu_autopilot_root"
+              action="action_ai_alerts" name="مرکز استثناها" sequence="10"/>
+    <menuitem id="menu_autopilot_approvals" parent="menu_autopilot_root"
+              action="action_purchase_to_approve" name="تأییدهای خرید" sequence="20"/>
+    <menuitem id="menu_autopilot_rules" parent="menu_autopilot_root"
+              action="action_automation_rules" name="قوانین اتوماسیون" sequence="30"/>
+    <menuitem id="menu_autopilot_advisor" parent="menu_autopilot_root"
+              action="action_ai_advisor" name="مشاور مالی هوشمند" sequence="40"/>
+
+    <!-- ===================== منوها ===================== -->
+    <menuitem id="menu_ai_root" name="هوش مصنوعی مالی" sequence="6"/>
+    <menuitem id="menu_ai_capture" parent="menu_ai_root" action="action_ai_capture"
+              name="ثبت‌کننده هوشمند اسناد" sequence="10"/>
+    <menuitem id="menu_ai_alerts" parent="menu_ai_root" action="action_ai_alerts"
+              name="هشدارهای بازرس" sequence="20"/>
+    <menuitem id="menu_ai_advisor" parent="menu_ai_root" action="action_ai_advisor"
+              name="مشاور مالی (پرسش و پاسخ)" sequence="30"/>
+    <menuitem id="menu_ai_insurance" parent="menu_ai_root" action="action_ai_insurance"
+              name="لیست بیمه ماهانه" sequence="40"/>
+</odoo>

@@ -1,0 +1,75 @@
+/* Control panel, breadcrumbs, search, filters, pagination and view switcher. */
+
+.o_control_panel {
+    position: relative;
+    z-index: 20;
+    min-block-size: 3.75rem;
+    border-block-end: 1px solid var(--lg-border-soft);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .065), transparent 55%),
+        var(--lg-surface) !important;
+    color: var(--lg-text-primary);
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-sm);
+    -webkit-backdrop-filter: blur(var(--lg-blur-md)) saturate(135%);
+    backdrop-filter: blur(var(--lg-blur-md)) saturate(135%);
+}
+
+.o_control_panel :where(.o_breadcrumb, .breadcrumb-item, .breadcrumb-item.active, .o_pager, .o_pager_counter) {
+    color: var(--lg-text-secondary) !important;
+}
+
+.o_control_panel .breadcrumb-item:last-child,
+.o_control_panel .o_breadcrumb .active { color: var(--lg-text-primary) !important; font-weight: 700; }
+.o_control_panel .breadcrumb-item + .breadcrumb-item::before { color: var(--lg-text-muted); }
+
+.o_control_panel :where(.o_control_panel_main_buttons, .o_control_panel_actions, .o_control_panel_navigation) {
+    gap: var(--lg-space-2);
+}
+
+.o_control_panel :where(.btn, .o_switch_view, .o_pager_previous, .o_pager_next) {
+    min-block-size: var(--lg-control-height);
+    border-radius: var(--lg-radius-sm);
+}
+
+.o_control_panel .o_switch_view {
+    min-inline-size: var(--lg-control-height);
+    border: 1px solid transparent;
+    color: var(--lg-text-secondary);
+}
+.o_control_panel .o_switch_view:hover,
+.o_control_panel .o_switch_view.active { border-color: var(--lg-primary-border); background: var(--lg-primary-soft); color: var(--lg-primary); }
+
+.o_searchview {
+    min-block-size: var(--lg-control-height);
+    border: 1px solid var(--lg-border) !important;
+    border-radius: var(--lg-radius-sm) !important;
+    background: var(--lg-surface-solid) !important;
+    color: var(--lg-text-primary);
+    box-shadow: var(--lg-inner-light);
+    transition: border-color var(--lg-duration-fast), box-shadow var(--lg-duration-fast);
+}
+.o_searchview:focus-within { border-color: var(--lg-primary) !important; box-shadow: var(--lg-focus-ring), var(--lg-inner-light); }
+.o_searchview .o_searchview_input { color: var(--lg-text-primary); }
+.o_searchview .o_searchview_facet {
+    margin-block: .2rem;
+    border: 1px solid var(--lg-primary-border);
+    border-radius: .55rem;
+    background: var(--lg-primary-soft) !important;
+    color: var(--lg-text-primary);
+}
+.o_searchview .o_searchview_facet .o_searchview_facet_label { background: transparent !important; color: var(--lg-primary); }
+.o_searchview .o_searchview_facet > .bg-view {
+    border-color: var(--lg-primary-border) !important;
+    background: var(--lg-primary-soft) !important;
+    box-shadow: var(--lg-inner-light) !important;
+}
+
+.o_control_panel .o_pager_value,
+.o_control_panel .o_pager_limit { font-variant-numeric: tabular-nums; unicode-bidi: isolate; }
+
+.o_cp_action_menus .dropdown-toggle,
+.o_searchview_dropdown_toggler { color: var(--lg-text-secondary); }
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    .o_control_panel { background: var(--lg-surface-fallback) !important; }
+}

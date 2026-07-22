@@ -1,0 +1,155 @@
+/* Desktop, tablet, mobile, performance and accessibility adaptations. */
+
+@media (max-width: 1199.98px) {
+    :root { --lg-sidebar-width: 248px; }
+    .o_form_view .o_form_sheet { margin-inline: var(--lg-space-3); }
+    .o_account_kanban .o_kanban_renderer { padding: var(--lg-space-3); }
+}
+
+@media (max-width: 991.98px) {
+    :root {
+        --lg-blur-md: 10px;
+        --lg-blur-lg: 14px;
+    }
+
+    .o_component_with_search_panel > .o_content > .o_search_panel { max-inline-size: unquote("min(85vw, 20rem)"); }
+    .o_account_kanban.o_kanban_ungrouped .o_kanban_record { inline-size: 100% !important; }
+    .o_graph_renderer .o_graph_canvas_container { min-block-size: 17rem; }
+}
+
+@media (max-width: 767.98px) {
+    :root {
+        --lg-navbar-height: 48px;
+        --lg-control-height: 42px;
+    }
+
+    body.o_lg_sidebar_enabled .o_action_manager,
+    body.o_lg_sidebar_enabled.o_lg_sidebar_collapsed .o_action_manager {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .o_lg_sidebar,
+    .o_liquid_sidebar {
+        /* Keep the drawer header and its close control below the fixed navbar. */
+        inset-block-start: var(--lg-navbar-height);
+        inline-size: unquote("min(88vw, 22rem)") !important;
+        transform: translateX(110%);
+    }
+    [dir="ltr"] :where(.o_lg_sidebar, .o_liquid_sidebar) { transform: translateX(-110%); }
+    body.o_lg_sidebar_mobile_open .o_lg_sidebar,
+    html.liquid-sidebar-mobile-open :where(.o_lg_sidebar, .o_liquid_sidebar),
+    .o_liquid_sidebar.is-mobile.is-open { transform: translateX(0); }
+
+    html.liquid-sidebar-mobile-open,
+    html.liquid-sidebar-mobile-open body { overflow: hidden; }
+
+    .o_web_client :where(.btn, button, [role="button"]) { min-block-size: var(--lg-touch-target); }
+
+    .o_control_panel {
+        min-block-size: 3.5rem;
+        padding: var(--lg-space-2) !important;
+        -webkit-backdrop-filter: blur(var(--lg-blur-sm)) saturate(120%);
+        backdrop-filter: blur(var(--lg-blur-sm)) saturate(120%);
+    }
+    .o_control_panel .o_control_panel_breadcrumbs { min-inline-size: 0; }
+    .o_control_panel .breadcrumb { flex-wrap: nowrap; overflow: hidden; }
+    .o_control_panel .breadcrumb-item { max-inline-size: 12rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .o_control_panel .o_searchview { inline-size: 100%; }
+
+    .o_form_view .o_form_sheet_bg { padding: var(--lg-space-2); }
+    .o_form_view .o_form_sheet {
+        inline-size: 100%;
+        margin: 0;
+        padding: var(--lg-space-4) !important;
+        border-radius: var(--lg-radius-lg) !important;
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+    }
+    .o_form_view .o_form_buttonbox { overflow-x: auto; flex-wrap: nowrap; padding-block-end: var(--lg-space-2); }
+    .o_form_statusbar { overflow-x: auto; }
+
+    .o_list_renderer { max-inline-size: 100%; overflow: auto !important; border-radius: var(--lg-radius-sm); }
+    .o_list_renderer .o_list_table { min-inline-size: max-content; }
+    .o_list_renderer .o_list_table :where(th, td) { padding-inline: .65rem; }
+
+    .o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost),
+    .o_account_kanban .o_kanban_record:not(.o_kanban_ghost) { inline-size: 100% !important; max-inline-size: none; }
+
+    .o_dialog .modal-dialog,
+    .o_dialog_container .modal-dialog,
+    .modal.o_technical_modal .modal-dialog {
+        inline-size: calc(100vw - 1rem);
+        max-inline-size: none;
+        min-block-size: calc(100dvh - 1rem);
+        margin: .5rem;
+    }
+    .o_dialog .modal-content,
+    .o_dialog_container .modal-content,
+    .modal.o_technical_modal .modal-content {
+        min-block-size: calc(100dvh - 1rem);
+        max-block-size: calc(100dvh - 1rem);
+        border-radius: var(--lg-radius-lg) !important;
+    }
+    .o_dialog .modal-body,
+    .o_dialog_container .modal-body { flex: 1 1 auto; overflow: auto; }
+
+    .o-mail-Chatter { border-inline-start: 0; border-block-start: 1px solid var(--lg-border-soft); }
+    .o-mail-Chatter-topbar { -webkit-backdrop-filter: none; backdrop-filter: none; }
+
+    .o_calendar_container { margin: var(--lg-space-2); border-radius: var(--lg-radius-sm); }
+    .o_calendar_container .o_calendar_sidebar_container { position: absolute; z-index: 4; inset: 0; inline-size: unquote("min(88vw, 20rem)") !important; box-shadow: var(--lg-shadow-lg); }
+    .o_calendar_renderer .fc .fc-event { min-block-size: 1.75rem; }
+
+    .o_pivot,
+    .o_graph_renderer,
+    .o_activity_view { margin: var(--lg-space-2); }
+    .o_graph_renderer .o_graph_canvas_container { min-block-size: 15rem; }
+}
+
+@media (max-width: 575.98px) {
+    .o_navbar_apps_menu .o-dropdown--menu,
+    .o_navbar_apps_menu .dropdown-menu { inline-size: calc(100vw - 1rem); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .o_control_panel .breadcrumb-item:not(:last-child) { display: none; }
+    .o_account_kanban .o_kanban_renderer { padding: var(--lg-space-2); }
+    .o_account_kanban .o_kanban_record:not(.o_kanban_ghost) { border-radius: var(--lg-radius-lg) !important; }
+    .o_notification_manager { inset-inline: .5rem !important; }
+    .o_notification_manager .o_notification { inline-size: auto !important; }
+}
+
+@media (hover: none) {
+    .o_web_client :where(.btn-primary, .o_kanban_record, .o_nav_entry) { transform: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html:focus-within { scroll-behavior: auto; }
+    .o_web_client *,
+    .o_web_client *::before,
+    .o_web_client *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+}
+
+@media (prefers-contrast: more) {
+    :root { --lg-border: currentColor; --lg-border-soft: color-mix(in srgb, currentColor 42%, transparent); }
+    .o_web_client :where(.btn, .o_input, .form-control, .form-select) { border-width: 2px !important; }
+}
+
+@media (forced-colors: active) {
+    .o_web_client :where(.o_main_navbar, .o_control_panel, .o_form_sheet, .o_kanban_record, .modal-content, .dropdown-menu) {
+        forced-color-adjust: auto;
+        border: 1px solid CanvasText !important;
+        background: Canvas !important;
+        color: CanvasText !important;
+        box-shadow: none !important;
+    }
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    .o_web_client :where(.o_main_navbar, .o_control_panel, .o_form_sheet, .o_form_statusbar, .o_lg_sidebar, .o_app_menu_sidebar, .modal-content) {
+        background: var(--lg-surface-fallback) !important;
+    }
+}

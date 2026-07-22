@@ -1,0 +1,160 @@
+/* Odoo 18 NavBar and real app/systray selectors. */
+
+.o_navbar { position: relative; z-index: var(--lg-z-navbar); }
+
+.o_main_navbar {
+    --o-navbar-height: var(--lg-navbar-height);
+    min-block-size: var(--lg-navbar-height);
+    border: 0 !important;
+    border-block-end: 1px solid var(--lg-border) !important;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .10), transparent 58%),
+        var(--lg-surface-strong) !important;
+    color: var(--lg-text-primary);
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-md);
+    -webkit-backdrop-filter: blur(var(--lg-blur-lg)) saturate(var(--lg-saturation));
+    backdrop-filter: blur(var(--lg-blur-lg)) saturate(var(--lg-saturation));
+}
+
+.o_main_navbar :where(.o_menu_toggle, .o_menu_brand, .o_nav_entry, .dropdown-toggle, button, a) {
+    color: var(--lg-text-primary) !important;
+}
+
+.o_main_navbar :where(.o_menu_toggle, .o_nav_entry, .o_menu_sections .dropdown-toggle, .o_navbar_apps_menu button) {
+    min-block-size: calc(var(--lg-navbar-height) - .5rem);
+    margin-block: .25rem;
+    border: 1px solid transparent !important;
+    border-radius: var(--lg-radius-sm) !important;
+    background: transparent !important;
+    transition: color var(--lg-duration-fast), background-color var(--lg-duration-fast), border-color var(--lg-duration-fast), transform var(--lg-duration-fast);
+}
+
+.o_main_navbar :where(.o_nav_entry, .o_menu_sections .dropdown-toggle, .o_navbar_apps_menu button):hover,
+.o_main_navbar :where(.o_nav_entry.active, .o_menu_sections .dropdown-toggle.show, .o_navbar_apps_menu .show > button) {
+    border-color: var(--lg-border) !important;
+    background: var(--lg-primary-soft) !important;
+    color: var(--lg-primary) !important;
+    box-shadow: var(--lg-inner-light);
+}
+
+.o_main_navbar .o_menu_brand {
+    max-inline-size: 18rem;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.o_main_navbar .o_menu_brand_icon,
+.o_main_navbar .o_app_icon {
+    border-radius: .65rem;
+    box-shadow: var(--lg-inner-light), var(--lg-shadow-sm);
+}
+
+.o_main_navbar .o_navbar_breadcrumbs,
+.o_main_navbar .o_navbar_breadcrumbs .btn { color: var(--lg-text-secondary) !important; }
+
+.o_main_navbar .o_menu_systray {
+    align-items: stretch;
+    gap: .125rem;
+}
+
+.o_main_navbar .o_liquid_systray_item {
+    display: flex;
+    align-items: stretch;
+}
+
+.o_main_navbar .o_menu_systray > div > :where(button, a, .dropdown-toggle),
+.o_main_navbar .o_menu_systray .o_liquid_theme_toggle .btn,
+.o_main_navbar .o_liquid_systray_button {
+    min-inline-size: var(--lg-touch-target);
+    min-block-size: calc(var(--lg-navbar-height) - .5rem);
+    margin-block: .25rem;
+    border: 1px solid transparent !important;
+    border-radius: var(--lg-radius-sm) !important;
+    background: transparent !important;
+}
+
+.o_main_navbar .o_menu_systray > div > :where(button, a, .dropdown-toggle):hover,
+.o_main_navbar .o_menu_systray .show > .dropdown-toggle,
+.o_main_navbar .o_liquid_systray_button:hover,
+.o_main_navbar .o_liquid_systray_button.is-active,
+.o_main_navbar .o_liquid_systray_button[aria-pressed="true"] {
+    border-color: var(--lg-border) !important;
+    background: var(--lg-primary-soft) !important;
+    color: var(--lg-primary) !important;
+}
+
+.o_main_navbar .o_liquid_systray_button:focus-visible {
+    outline: 0;
+    border-color: var(--lg-primary) !important;
+    box-shadow: var(--lg-focus-ring) !important;
+}
+
+.o_main_navbar .o_liquid_systray_button:disabled,
+.o_main_navbar .o_liquid_systray_button[aria-busy="true"] {
+    cursor: progress;
+    opacity: .66;
+}
+
+.o_main_navbar .o_liquid_systray_button > :where(i, .fa, .oi) {
+    inline-size: 1.15rem;
+    line-height: 1;
+    text-align: center;
+}
+
+.o_main_navbar .o_menu_systray .badge {
+    border: 1px solid color-mix(in srgb, var(--lg-danger) 42%, transparent);
+    background: var(--lg-danger-soft) !important;
+    color: var(--lg-danger) !important;
+    text-shadow: none;
+}
+
+/* Community desktop Apps menu: present real apps as a responsive glass grid. */
+.o_navbar_apps_menu .o-dropdown--menu,
+.o_navbar_apps_menu .dropdown-menu {
+    inline-size: unquote("min(40rem, calc(100vw - 2rem))");
+    max-block-size: unquote("min(72vh, 42rem)");
+    padding: var(--lg-space-3);
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    gap: var(--lg-space-2);
+    overflow: auto;
+}
+
+.o_navbar_apps_menu .o-dropdown--menu.show,
+.o_navbar_apps_menu .dropdown-menu.show { display: grid; }
+
+.o_navbar_apps_menu :where(.o-dropdown--menu, .dropdown-menu) .o_app {
+    min-block-size: 3rem;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--lg-border-soft);
+    border-radius: var(--lg-radius-sm);
+    background: var(--lg-surface-soft);
+    color: var(--lg-text-primary) !important;
+    font-weight: 600;
+    transition: transform var(--lg-duration-base) var(--lg-ease-standard), background-color var(--lg-duration-base), border-color var(--lg-duration-base);
+}
+
+.o_navbar_apps_menu :where(.o-dropdown--menu, .dropdown-menu) .o_app:hover,
+.o_navbar_apps_menu :where(.o-dropdown--menu, .dropdown-menu) .o_app.focus {
+    border-color: var(--lg-primary-border);
+    background: var(--lg-primary-soft);
+}
+
+@media (hover: hover) {
+    .o_navbar_apps_menu :where(.o-dropdown--menu, .dropdown-menu) .o_app:hover { transform: translateY(-2px); }
+}
+
+/* Owl shell is mounted: remove only the duplicate native launchers.  If the
+   component fails before readiness, Odoo's original controls remain intact. */
+html.liquid-sidebar-ready .o_main_navbar .o_navbar_apps_menu { display: none !important; }
+
+@media (max-width: 991.98px) {
+    html.liquid-sidebar-ready .o_main_navbar .o_menu_toggle { display: none !important; }
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    .o_main_navbar { background: var(--lg-surface-fallback) !important; }
+}

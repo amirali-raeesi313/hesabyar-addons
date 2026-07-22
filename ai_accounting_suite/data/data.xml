@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="seq_ai_document_capture" model="ir.sequence">
+        <field name="name">ثبت‌کننده هوشمند اسناد</field>
+        <field name="code">ai.document.capture</field>
+        <field name="prefix">DOC/</field>
+        <field name="padding">4</field>
+    </record>
+
+    <record id="cron_daily_audit" model="ir.cron">
+        <field name="name">بازرس هوشمند: بررسی روزانه</field>
+        <field name="model_id" ref="model_ai_audit_alert"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_daily_audit()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="cron_weekly_advisor" model="ir.cron">
+        <field name="name">مشاور مالی: گزارش هفتگی</field>
+        <field name="model_id" ref="model_ai_audit_alert"/>
+        <field name="state">code</field>
+        <field name="code">model.env['ai.finance.advisor']._cron_weekly_report()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">weeks</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="cron_monthly_vat" model="ir.cron">
+        <field name="name">دستیار مالیاتی: پیش‌نویس ارزش افزوده ماهانه</field>
+        <field name="model_id" ref="model_ai_audit_alert"/>
+        <field name="state">code</field>
+        <field name="code">model.env['ai.tax.assistant']._cron_monthly_vat_draft()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">months</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>
