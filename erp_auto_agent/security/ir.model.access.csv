@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_agent_user,agent.user,model_erp_auto_agent,erp_auto_core.group_erp_auto_user,1,0,0,0
+access_agent_manager,agent.manager,model_erp_auto_agent,erp_auto_core.group_erp_auto_manager,1,1,1,1
+access_agent_tool_user,agent.tool.user,model_erp_auto_agent_tool,erp_auto_core.group_erp_auto_user,1,0,0,0
+access_agent_tool_manager,agent.tool.manager,model_erp_auto_agent_tool,erp_auto_core.group_erp_auto_manager,1,1,1,1
+access_agent_run_user,agent.run.user,model_erp_auto_agent_run,erp_auto_core.group_erp_auto_user,1,0,0,0
+access_agent_run_manager,agent.run.manager,model_erp_auto_agent_run,erp_auto_core.group_erp_auto_manager,1,1,1,1

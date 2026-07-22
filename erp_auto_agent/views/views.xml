@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ==================== عامل هوشمند ==================== -->
+    <record id="view_agent_list" model="ir.ui.view">
+        <field name="name">erp.auto.agent.list</field>
+        <field name="model">erp.auto.agent</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="not active">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="agent_type"/>
+                <field name="max_amount"/>
+                <field name="requires_approval" widget="boolean_toggle"/>
+                <field name="run_count"/>
+                <field name="last_run"/>
+                <field name="active" widget="boolean_toggle"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_agent_form" model="ir.ui.view">
+        <field name="name">erp.auto.agent.form</field>
+        <field name="model">erp.auto.agent</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_run_now" type="object" string="اجرای اکنون"
+                            class="btn-primary"/>
+                    <button name="action_toggle_active" type="object"
+                            string="فعال/غیرفعال (کلید خاموش)"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="غیرفعال" bg_color="text-bg-danger"
+                            invisible="active"/>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="نام عامل"/></h1>
+                        <field name="code" placeholder="کد فنی مانند collections_followup"/>
+                    </div>
+                    <group>
+                        <group string="نوع و اختیارات">
+                            <field name="agent_type"/>
+                            <field name="max_amount"/>
+                            <field name="requires_approval"/>
+                            <field name="confidence_threshold"/>
+                            <field name="approver_group_id"/>
+                        </group>
+                        <group string="هوش مصنوعی و دامنه">
+                            <field name="use_llm"/>
+                            <field name="allowed_model_ids" widget="many2many_tags"/>
+                            <field name="active"/>
+                            <field name="currency_id" groups="base.group_multi_currency"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="ابزارهای مجاز (whitelist)">
+                            <field name="tool_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="model_name"/>
+                                    <field name="method_name"/>
+                                    <field name="risk"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="دستور سیستمی">
+                            <field name="instruction"
+                                   placeholder="نقش و محدودیت‌های عامل برای LLM..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_agent" model="ir.actions.act_window">
+        <field name="name">عامل‌های هوشمند</field>
+        <field name="res_model">erp.auto.agent</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'active_test': False}</field>
+    </record>
+
+    <!-- ==================== اجرای عامل ==================== -->
+    <record id="view_agent_run_list" model="ir.ui.view">
+        <field name="name">erp.auto.agent.run.list</field>
+        <field name="model">erp.auto.agent.run</field>
+        <field name="arch" type="xml">
+            <list create="false"
+                  decoration-success="state == 'executed'"
+                  decoration-warning="state == 'pending_approval'"
+                  decoration-info="state == 'suggested'"
+                  decoration-danger="state in ('failed','rejected')">
+                <field name="create_date"/>
+                <field name="agent_id"/>
+                <field name="decision"/>
+                <field name="res_display"/>
+                <field name="amount"/>
+                <field name="confidence" widget="percentage"/>
+                <field name="state" widget="badge"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_agent_run_form" model="ir.ui.view">
+        <field name="name">erp.auto.agent.run.form</field>
+        <field name="model">erp.auto.agent.run</field>
+        <field name="arch" type="xml">
+            <form create="false">
+                <header>
+                    <button name="action_cancel" type="object" string="لغو"
+                            invisible="state not in ('suggested','pending_approval')"/>
+                    <button name="action_open_record" type="object" string="باز کردن رکورد"
+                            invisible="not res_id"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h2><field name="decision"/></h2></div>
+                    <group>
+                        <group>
+                            <field name="agent_id"/>
+                            <field name="trigger"/>
+                            <field name="confidence" widget="percentage"/>
+                            <field name="amount"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="res_display"/>
+                            <field name="approval_id"/>
+                            <field name="data_sources"/>
+                        </group>
+                    </group>
+                    <group string="دلیل تصمیم">
+                        <field name="reason" nolabel="1"/>
+                    </group>
+                    <group string="اقدام / خطا">
+                        <field name="action_taken" nolabel="1"/>
+                        <field name="error" nolabel="1" invisible="not error"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_agent_run_search" model="ir.ui.view">
+        <field name="name">erp.auto.agent.run.search</field>
+        <field name="model">erp.auto.agent.run</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="agent_id"/>
+                <field name="decision"/>
+                <filter name="pending" string="در انتظار تأیید"
+                        domain="[('state','=','pending_approval')]"/>
+                <filter name="suggested" string="پیشنهادها"
+                        domain="[('state','=','suggested')]"/>
+                <filter name="executed" string="اجراشده"
+                        domain="[('state','=','executed')]"/>
+                <group expand="0" string="گروه‌بندی">
+                    <filter name="g_agent" string="عامل" context="{'group_by':'agent_id'}"/>
+                    <filter name="g_state" string="وضعیت" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_agent_run" model="ir.actions.act_window">
+        <field name="name">اجراهای عامل</field>
+        <field name="res_model">erp.auto.agent.run</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ==================== منو (زیر هسته اتوماسیون) ==================== -->
+    <menuitem id="menu_agent" name="عامل‌های هوشمند"
+              parent="erp_auto_core.menu_erp_auto_root"
+              action="action_agent" sequence="5"/>
+    <menuitem id="menu_agent_run" name="اجراهای عامل"
+              parent="erp_auto_core.menu_erp_auto_root"
+              action="action_agent_run" sequence="6"/>
+</odoo>

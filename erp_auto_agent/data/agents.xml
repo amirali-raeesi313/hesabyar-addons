@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============ عامل وصول مطالبات ============ -->
+    <record id="agent_collections" model="erp.auto.agent">
+        <field name="name">عامل وصول مطالبات</field>
+        <field name="code">collections_followup</field>
+        <field name="agent_type">collections</field>
+        <field name="sequence">10</field>
+        <field name="requires_approval" eval="False"/>
+        <field name="confidence_threshold">0.7</field>
+        <field name="allowed_model_ids"
+               eval="[(6,0,[ref('account.model_account_move'), ref('mail.model_mail_activity')])]"/>
+        <field name="instruction">تو «عامل وصول مطالبات» یک ERP ایرانی هستی. فقط از داده‌ی داده‌شده استفاده کن، هرگز عدد نساز و دلیل هر پیگیری را در یک جمله‌ی فارسی کوتاه بگو.</field>
+    </record>
+    <record id="tool_collections_activity" model="erp.auto.agent.tool">
+        <field name="agent_id" ref="agent_collections"/>
+        <field name="name">ایجاد یادآور پیگیری</field>
+        <field name="model_name">mail.activity</field>
+        <field name="method_name">create</field>
+        <field name="risk">low</field>
+    </record>
+
+    <!-- ============ عامل خرید ============ -->
+    <record id="agent_purchase" model="erp.auto.agent">
+        <field name="name">عامل خرید</field>
+        <field name="code">purchase_shortage</field>
+        <field name="agent_type">purchase</field>
+        <field name="sequence">20</field>
+        <field name="requires_approval" eval="True"/>
+        <field name="max_amount">0</field>
+        <field name="confidence_threshold">0.7</field>
+        <field name="allowed_model_ids"
+               eval="[(6,0,[ref('stock.model_stock_warehouse_orderpoint')])]"/>
+        <field name="approver_group_id" ref="erp_auto_core.group_erp_auto_manager"/>
+        <field name="instruction">تو «عامل خرید» یک ERP ایرانی هستی. کالاهای زیر نقطه سفارش را شناسایی و برای تأمین آن‌ها درخواست تأیید بساز. هرگز بدون تأیید انسانی خرید نکن.</field>
+    </record>
+    <record id="tool_purchase_request" model="erp.auto.agent.tool">
+        <field name="agent_id" ref="agent_purchase"/>
+        <field name="name">درخواست تأیید خرید</field>
+        <field name="model_name">purchase.order</field>
+        <field name="method_name">create</field>
+        <field name="risk">high</field>
+    </record>
+
+    <!-- ============ کرون اجرای عامل‌ها (پیش‌فرض خاموش) ============ -->
+    <record id="cron_run_agents" model="ir.cron">
+        <field name="name">حساب‌یار: اجرای عامل‌های هوشمند</field>
+        <field name="model_id" ref="model_erp_auto_agent"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_run_agents()</field>
+        <field name="interval_number">6</field>
+        <field name="interval_type">hours</field>
+        <field name="active" eval="False"/>
+    </record>
+</odoo>
