@@ -5,10 +5,16 @@
         The original form, action, CSRF token, fields, redirect values and
         server-provided error/message nodes remain owned by web.login.
     -->
+    <!--
+        priority 10 (below website's login_layout override at priority 20) so
+        this skin applies BEFORE website. When website is installed it replaces
+        the whole <t> root, cleanly discarding this skin instead of erroring;
+        when website is absent, the skin renders normally.
+    -->
     <template id="login_layout_liquid_glass"
               name="Liquid Glass Login Layout"
               inherit_id="web.login_layout"
-              priority="40">
+              priority="10">
         <xpath expr="//t[@t-call='web.frontend_layout']/t[@t-set='html_data']" position="before">
             <t t-set="title" t-value="'حساب‌یار | ورود'"/>
             <t t-set="pageName" t-value="'o_liquid_login_wrap'"/>
