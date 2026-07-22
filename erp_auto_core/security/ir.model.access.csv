@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_audit_log_user,audit.log.user,model_erp_auto_audit_log,group_erp_auto_user,1,0,0,0
+access_audit_log_manager,audit.log.manager,model_erp_auto_audit_log,group_erp_auto_manager,1,0,1,0
+access_approval_user,approval.user,model_erp_auto_approval,group_erp_auto_user,1,1,1,0
+access_approval_manager,approval.manager,model_erp_auto_approval,group_erp_auto_manager,1,1,1,0
+access_job_user,job.user,model_erp_auto_job,group_erp_auto_user,1,0,0,0
+access_job_manager,job.manager,model_erp_auto_job,group_erp_auto_manager,1,1,1,1

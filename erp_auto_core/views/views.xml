@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ==================== صف تأیید ==================== -->
+    <record id="view_approval_list" model="ir.ui.view">
+        <field name="name">erp.auto.approval.list</field>
+        <field name="model">erp.auto.approval</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="state == 'rejected'" decoration-success="state == 'approved'"
+                  decoration-info="state == 'pending'">
+                <field name="name"/>
+                <field name="approval_type"/>
+                <field name="res_display"/>
+                <field name="amount" widget="monetary" sum="جمع"/>
+                <field name="requested_by" widget="many2one_avatar_user"/>
+                <field name="deadline"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_approval_form" model="ir.ui.view">
+        <field name="name">erp.auto.approval.form</field>
+        <field name="model">erp.auto.approval</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_approve" type="object" string="تأیید"
+                            class="btn-primary" invisible="state != 'pending'"/>
+                    <button name="action_reject" type="object" string="رد"
+                            class="btn-danger" invisible="state != 'pending'"/>
+                    <button name="action_cancel" type="object" string="لغو"
+                            invisible="state != 'pending'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="approval_type"/>
+                            <field name="amount"/>
+                            <field name="deadline"/>
+                            <field name="requested_by"/>
+                        </group>
+                        <group>
+                            <field name="res_display"/>
+                            <button name="action_open_record" type="object"
+                                    string="باز کردن رکورد مرتبط" class="btn-link"
+                                    invisible="not res_id"/>
+                            <field name="approver_group_id"/>
+                            <field name="decided_by"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="model_name" invisible="1"/>
+                            <field name="res_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="reason"/>
+                        <field name="decision_note"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_approval" model="ir.actions.act_window">
+        <field name="name">صف تأیید</field>
+        <field name="res_model">erp.auto.approval</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_pending': 1}</field>
+    </record>
+
+    <record id="view_approval_search" model="ir.ui.view">
+        <field name="name">erp.auto.approval.search</field>
+        <field name="model">erp.auto.approval</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="approval_type"/>
+                <filter name="pending" string="در انتظار" domain="[('state', '=', 'pending')]"/>
+                <filter name="mine" string="درخواست‌های من" domain="[('requested_by', '=', uid)]"/>
+                <group expand="0" string="گروه‌بندی">
+                    <filter name="group_type" string="نوع" context="{'group_by': 'approval_type'}"/>
+                    <filter name="group_state" string="وضعیت" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ==================== لاگ حسابرسی ==================== -->
+    <record id="view_audit_log_list" model="ir.ui.view">
+        <field name="name">erp.auto.audit.log.list</field>
+        <field name="model">erp.auto.audit.log</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false">
+                <field name="create_date"/>
+                <field name="name"/>
+                <field name="action"/>
+                <field name="source"/>
+                <field name="res_display"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_audit_log_form" model="ir.ui.view">
+        <field name="name">erp.auto.audit.log.form</field>
+        <field name="model">erp.auto.audit.log</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false" delete="false">
+                <sheet>
+                    <div class="oe_title"><h1><field name="name"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="create_date"/>
+                            <field name="action"/>
+                            <field name="source"/>
+                            <field name="user_id"/>
+                        </group>
+                        <group>
+                            <field name="model_name"/>
+                            <field name="res_display"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="reason"/>
+                        <field name="data_json"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_audit_log" model="ir.actions.act_window">
+        <field name="name">لاگ حسابرسی</field>
+        <field name="res_model">erp.auto.audit.log</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ==================== کارهای خودکار ==================== -->
+    <record id="view_job_list" model="ir.ui.view">
+        <field name="name">erp.auto.job.list</field>
+        <field name="model">erp.auto.job</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="state == 'failed'" decoration-success="state == 'done'">
+                <field name="create_date"/>
+                <field name="name"/>
+                <field name="job_key"/>
+                <field name="attempts"/>
+                <field name="next_retry"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_job_form" model="ir.ui.view">
+        <field name="name">erp.auto.job.form</field>
+        <field name="model">erp.auto.job</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_retry_now" type="object" string="تلاش دوباره"
+                            class="btn-primary" invisible="state not in ('pending', 'failed')"/>
+                    <button name="action_cancel" type="object" string="لغو"
+                            invisible="state != 'pending'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="job_key"/>
+                            <field name="model_name"/>
+                            <field name="method_name"/>
+                            <field name="args_json"/>
+                        </group>
+                        <group>
+                            <field name="attempts"/>
+                            <field name="max_attempts"/>
+                            <field name="next_retry"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="last_error"/>
+                        <field name="result"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_job" model="ir.actions.act_window">
+        <field name="name">کارهای خودکار</field>
+        <field name="res_model">erp.auto.job</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ==================== منو ==================== -->
+    <menuitem id="menu_erp_auto_root" name="هسته اتوماسیون"
+              sequence="6" groups="group_erp_auto_user"/>
+    <menuitem id="menu_approval" name="صف تأیید" parent="menu_erp_auto_root"
+              action="action_approval" sequence="10"/>
+    <menuitem id="menu_job" name="کارهای خودکار" parent="menu_erp_auto_root"
+              action="action_job" sequence="20"/>
+    <menuitem id="menu_audit_log" name="لاگ حسابرسی" parent="menu_erp_auto_root"
+              action="action_audit_log" sequence="30"/>
+</odoo>
