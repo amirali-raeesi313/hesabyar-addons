@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_quality_point_list" model="ir.ui.view">
+        <field name="name">erp.auto.quality.point.list</field>
+        <field name="model">erp.auto.quality.point</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="trigger_type"/>
+                <field name="measure_type"/>
+                <field name="product_category_id"/>
+                <field name="team_responsible_id"/>
+                <field name="check_count"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_quality_point_form" model="ir.ui.view">
+        <field name="name">erp.auto.quality.point.form</field>
+        <field name="model">erp.auto.quality.point</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_checks" type="object"
+                                class="oe_stat_button" icon="fa-check-square-o">
+                            <field name="check_count" widget="statinfo" string="بازرسی‌ها"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="مثلاً بازرسی ورودی کالا"/></h1>
+                    </div>
+                    <group>
+                        <group string="محرک و دامنه">
+                            <field name="trigger_type"/>
+                            <field name="product_category_id"/>
+                            <field name="product_ids" widget="many2many_tags"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="معیار پذیرش">
+                            <field name="measure_type"/>
+                            <field name="spec_min" invisible="measure_type != 'quantitative'"/>
+                            <field name="spec_max" invisible="measure_type != 'quantitative'"/>
+                            <field name="spec_target" invisible="measure_type != 'quantitative'"/>
+                            <field name="uom_label" invisible="measure_type != 'quantitative'"/>
+                            <field name="quarantine_on_fail"/>
+                            <field name="team_responsible_id"/>
+                        </group>
+                    </group>
+                    <group string="دستورالعمل">
+                        <field name="instruction" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_quality_point" model="ir.actions.act_window">
+        <field name="name">نقاط کنترل کیفیت</field>
+        <field name="res_model">erp.auto.quality.point</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

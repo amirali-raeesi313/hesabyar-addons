@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_forecast_user,forecast.user,model_erp_auto_forecast,erp_auto_core.group_erp_auto_user,1,0,0,0
+access_forecast_manager,forecast.manager,model_erp_auto_forecast,erp_auto_core.group_erp_auto_manager,1,1,1,1
+access_churn_user,churn.user,model_erp_auto_churn,erp_auto_core.group_erp_auto_user,1,0,0,0
+access_churn_manager,churn.manager,model_erp_auto_churn,erp_auto_core.group_erp_auto_manager,1,1,1,1

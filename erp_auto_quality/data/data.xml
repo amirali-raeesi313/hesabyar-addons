@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_quality_check" model="ir.sequence">
+        <field name="name">شماره بازرسی کیفیت</field>
+        <field name="code">erp.auto.quality.check</field>
+        <field name="prefix">QC/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="quality_point_receipt" model="erp.auto.quality.point" context="{'noupdate': True}">
+        <field name="name">بازرسی ورودی کالا</field>
+        <field name="trigger_type">receipt</field>
+        <field name="measure_type">pass_fail</field>
+        <field name="quarantine_on_fail" eval="True"/>
+        <field name="instruction">سلامت ظاهری، تعداد و انطباق با سفارش خرید بررسی شود.</field>
+    </record>
+</odoo>

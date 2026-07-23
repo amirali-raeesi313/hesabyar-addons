@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_quality_alert_list" model="ir.ui.view">
+        <field name="name">erp.auto.quality.alert.list</field>
+        <field name="model">erp.auto.quality.alert</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="severity == 'critical'"
+                  decoration-warning="severity == 'high'"
+                  decoration-muted="state == 'closed'">
+                <field name="name"/>
+                <field name="alert_type"/>
+                <field name="product_id"/>
+                <field name="partner_id"/>
+                <field name="severity" widget="badge"/>
+                <field name="responsible_id" widget="many2one_avatar_user"/>
+                <field name="deadline"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_quality_alert_form" model="ir.ui.view">
+        <field name="name">erp.auto.quality.alert.form</field>
+        <field name="model">erp.auto.quality.alert</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_start" type="object" string="شروع رسیدگی"
+                            class="btn-primary" invisible="state != 'new'"/>
+                    <button name="action_done" type="object" string="اقدام انجام شد"
+                            invisible="state != 'in_progress'"/>
+                    <button name="action_close" type="object" string="بستن (اثربخش)"
+                            invisible="state != 'done'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="alert_type"/>
+                            <field name="severity"/>
+                            <field name="product_id"/>
+                            <field name="partner_id"/>
+                        </group>
+                        <group>
+                            <field name="check_id"/>
+                            <field name="responsible_id"/>
+                            <field name="deadline"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="تحلیل و اقدام">
+                            <group>
+                                <field name="description"/>
+                                <field name="root_cause"/>
+                                <field name="corrective_action"/>
+                                <field name="preventive_action"/>
+                                <field name="effectiveness"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_quality_alert" model="ir.actions.act_window">
+        <field name="name">عدم انطباق‌ها (CAPA)</field>
+        <field name="res_model">erp.auto.quality.alert</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

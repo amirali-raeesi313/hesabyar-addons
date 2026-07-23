@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ==================== پیش‌بینی فروش ==================== -->
+    <record id="view_forecast_list" model="ir.ui.view">
+        <field name="name">erp.auto.forecast.list</field>
+        <field name="model">erp.auto.forecast</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="shortage_risk" decoration-muted="confidence &lt; 0.5">
+                <field name="product_id"/>
+                <field name="forecast_7"/>
+                <field name="forecast_30"/>
+                <field name="forecast_90"/>
+                <field name="trend"/>
+                <field name="confidence" widget="percentage"/>
+                <field name="suggested_reorder"/>
+                <field name="shortage_risk"/>
+                <field name="computed_on"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_forecast_form" model="ir.ui.view">
+        <field name="name">erp.auto.forecast.form</field>
+        <field name="model">erp.auto.forecast</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_enrich_llm" type="object"
+                            string="توضیح با هوش مصنوعی"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="product_id"/></h1></div>
+                    <group>
+                        <group string="پیش‌بینی">
+                            <field name="forecast_7"/>
+                            <field name="forecast_30"/>
+                            <field name="forecast_90"/>
+                            <field name="suggested_reorder"/>
+                            <field name="shortage_risk"/>
+                        </group>
+                        <group string="پایه">
+                            <field name="method"/>
+                            <field name="avg_monthly"/>
+                            <field name="trend"/>
+                            <field name="periods_used"/>
+                            <field name="confidence" widget="percentage"/>
+                            <field name="computed_on"/>
+                        </group>
+                    </group>
+                    <group string="عوامل / توضیح">
+                        <field name="factors" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_forecast" model="ir.actions.act_window">
+        <field name="name">پیش‌بینی فروش</field>
+        <field name="res_model">erp.auto.forecast</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">هنوز پیش‌بینی‌ای ساخته نشده است.</p>
+            <p>از دکمه‌ی «تولید پیش‌بینی» یا کرون هفتگی استفاده کنید. نیازمند سابقه‌ی فاکتور فروش است.</p>
+        </field>
+    </record>
+
+    <!-- دکمه‌ی سرور برای تولید دستی -->
+    <record id="action_forecast_generate" model="ir.actions.server">
+        <field name="name">تولید پیش‌بینی فروش</field>
+        <field name="model_id" ref="model_erp_auto_forecast"/>
+        <field name="state">code</field>
+        <field name="code">action = model.generate() and {
+            'type': 'ir.actions.act_window', 'res_model': 'erp.auto.forecast',
+            'view_mode': 'list,form', 'target': 'current'}</field>
+    </record>
+
+    <!-- ==================== ریزش مشتری ==================== -->
+    <record id="view_churn_list" model="ir.ui.view">
+        <field name="name">erp.auto.churn.list</field>
+        <field name="model">erp.auto.churn</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="risk_level == 'high'" decoration-warning="risk_level == 'medium'">
+                <field name="partner_id"/>
+                <field name="order_count"/>
+                <field name="last_order_date"/>
+                <field name="avg_interval_days"/>
+                <field name="days_since"/>
+                <field name="churn_score"/>
+                <field name="total_invoiced"/>
+                <field name="risk_level" widget="badge"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_churn_form" model="ir.ui.view">
+        <field name="name">erp.auto.churn.form</field>
+        <field name="model">erp.auto.churn</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_create_followup" type="object"
+                            string="ایجاد پیگیری" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="partner_id"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="risk_level"/>
+                            <field name="churn_score"/>
+                            <field name="order_count"/>
+                            <field name="total_invoiced"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="last_order_date"/>
+                            <field name="avg_interval_days"/>
+                            <field name="days_since"/>
+                            <field name="computed_on"/>
+                        </group>
+                    </group>
+                    <group string="توضیح">
+                        <field name="reason" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_churn_search" model="ir.ui.view">
+        <field name="name">erp.auto.churn.search</field>
+        <field name="model">erp.auto.churn</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <filter name="high" string="ریزش شدید" domain="[('risk_level','=','high')]"/>
+                <filter name="medium" string="ریسک متوسط" domain="[('risk_level','=','medium')]"/>
+                <group expand="0" string="گروه‌بندی">
+                    <filter name="g_risk" string="سطح ریسک" context="{'group_by':'risk_level'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_churn" model="ir.actions.act_window">
+        <field name="name">ریزش مشتری</field>
+        <field name="res_model">erp.auto.churn</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_high': 1, 'search_default_medium': 1}</field>
+    </record>
+
+    <record id="action_churn_generate" model="ir.actions.server">
+        <field name="name">محاسبه ریسک ریزش</field>
+        <field name="model_id" ref="model_erp_auto_churn"/>
+        <field name="state">code</field>
+        <field name="code">action = model.generate() and {
+            'type': 'ir.actions.act_window', 'res_model': 'erp.auto.churn',
+            'view_mode': 'list,form', 'target': 'current'}</field>
+    </record>
+
+    <!-- ==================== منو ==================== -->
+    <menuitem id="menu_ai_root" name="پیش‌بینی هوشمند"
+              parent="erp_auto_core.menu_erp_auto_root" sequence="8"/>
+    <menuitem id="menu_forecast" name="پیش‌بینی فروش"
+              parent="menu_ai_root" action="action_forecast" sequence="10"/>
+    <menuitem id="menu_forecast_gen" name="تولید پیش‌بینی"
+              parent="menu_ai_root" action="action_forecast_generate" sequence="15"/>
+    <menuitem id="menu_churn" name="ریزش مشتری"
+              parent="menu_ai_root" action="action_churn" sequence="20"/>
+    <menuitem id="menu_churn_gen" name="محاسبه ریزش"
+              parent="menu_ai_root" action="action_churn_generate" sequence="25"/>
+</odoo>

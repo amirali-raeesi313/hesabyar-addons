@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_qpoint_user,qpoint.user,model_erp_auto_quality_point,erp_auto_core.group_erp_auto_user,1,0,0,0
+access_qpoint_manager,qpoint.manager,model_erp_auto_quality_point,erp_auto_core.group_erp_auto_manager,1,1,1,1
+access_qcheck_user,qcheck.user,model_erp_auto_quality_check,erp_auto_core.group_erp_auto_user,1,1,1,0
+access_qcheck_manager,qcheck.manager,model_erp_auto_quality_check,erp_auto_core.group_erp_auto_manager,1,1,1,1
+access_qalert_user,qalert.user,model_erp_auto_quality_alert,erp_auto_core.group_erp_auto_user,1,1,1,0
+access_qalert_manager,qalert.manager,model_erp_auto_quality_alert,erp_auto_core.group_erp_auto_manager,1,1,1,1

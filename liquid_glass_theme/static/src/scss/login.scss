@@ -267,17 +267,39 @@ body.o_liquid_login_page #wrapwrap {
     background: var(--lg-login-input);
     font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: 0.015em;
+    letter-spacing: normal;
+}
+
+// حذف نشتی chrome وب‌سایت (لینک «Skip to Content» و نوار ویرایش) در صفحه ورود.
+// بعد از نصب website، صفحه ورود از frontend_layout استفاده می‌کند و این عناصر
+// در گوشه‌ی بالا-چپ ردی از خود می‌گذارند.
+.o_liquid_login_page {
+    .o_skip_to_content,
+    #oe_main_menu_navbar,
+    .o_website_edit_in_backend,
+    header#top,
+    nav.navbar,
+    .o_menu_systray,
+    o-component,
+    .o_frontend_to_backend_edit_btn,
+    .o_frontend_to_backend_nav {
+        display: none !important;
+    }
 }
 
 .o_liquid_login_identity h1 {
     margin: 0;
     color: var(--lg-login-ink);
     font-size: 2.35rem;
-    font-weight: 800;
-    line-height: 1.25;
-    letter-spacing: -0.035em;
+    // یکان فقط وزن معمولی دارد؛ وزن 800 «بولد مصنوعی» می‌سازد و فارسی را بهم می‌ریزد.
+    font-weight: normal;
+    line-height: 1.35;
+    // letter-spacing منفی اتصال حروف فارسی را می‌شکند → باید normal بماند.
+    letter-spacing: normal;
     text-shadow: 0 1px 18px rgba(115, 198, 255, 0.15);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 .o_liquid_login_identity p {

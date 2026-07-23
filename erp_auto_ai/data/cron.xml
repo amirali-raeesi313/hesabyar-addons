@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cron_forecast" model="ir.cron">
+        <field name="name">حساب‌یار: تولید پیش‌بینی فروش</field>
+        <field name="model_id" ref="model_erp_auto_forecast"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_generate()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">weeks</field>
+        <field name="active" eval="False"/>
+    </record>
+
+    <record id="cron_churn" model="ir.cron">
+        <field name="name">حساب‌یار: محاسبه ریسک ریزش مشتری</field>
+        <field name="model_id" ref="model_erp_auto_churn"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_generate()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">weeks</field>
+        <field name="active" eval="False"/>
+    </record>
+</odoo>
